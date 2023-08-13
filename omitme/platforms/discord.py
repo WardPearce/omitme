@@ -1,7 +1,10 @@
+import base64
+
 import httpx
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from seleniumwire import webdriver
+from seleniumwire.request import HTTPHeaders
 
 from omitme.errors import LoginError
 from omitme.util.platform import Platform
@@ -10,7 +13,7 @@ from omitme.util.targets import login, target
 
 class Discord(Platform):
     api_url = "https://discord.com/api/v9"
-    login_url = "https://discord.com/app"
+    login_url = "https://discord.com/login"
     alias = "discord"
 
     @login
@@ -19,26 +22,65 @@ class Discord(Platform):
 
         wait = WebDriverWait(driver, timeout=920)
 
-        def get_token(current: webdriver.Chrome) -> str | bool:
+        def get_headers_with_token(current: webdriver.Chrome) -> HTTPHeaders | bool:
             for request in current.requests:
-                if (
-                    request.url
-                    == "https://discord.com/api/v9/users/@me/affinities/guilds"
-                ):
-                    return request.headers["Authorization"]
+                if "Authorization" in request.headers:
+                    return request.headers
             return False
 
         try:
-            token: str = wait.until(get_token)
+            headers: dict = dict(wait.until(get_headers_with_token))
         except TimeoutException:
             raise LoginError()
 
-        return httpx.Client(headers={"Authorization": token})
+        driver.close()
+
+        headers.pop("content-length")
+        headers.pop("content-type")
+
+        return httpx.Client(headers=headers)
+
+    def _user_id_from_session(self, session: httpx.Client) -> str:
+        urlsafe_base64 = session.headers["Authorization"].split(".")[0]
+
+        return base64.b64decode(
+            urlsafe_base64 + "=" * (4 - len(urlsafe_base64) % 4)
+        ).decode()
+
+    def _delete_messages(
+        self, channel: dict, user_id: str, session: httpx.Client
+    ) -> None:
+        print(f"Checking {channel['id']} for {channel['recipients'][0]['global_name']}")
+
+        try:
+            messages = session.get(
+                f"/channels/{channel['id']}/messages", params={"limit": "100"}
+            ).json()
+        except httpx.HTTPStatusError:
+            return
+
+        for message in messages:
+            if message["author"]["id"] != user_id:
+                continue
+
+            try:
+                session.delete(f"/channels/{channel['id']}/messages/{message['id']}")
+            except httpx.HTTPStatusError:
+                pass
+
+        if len(messages) == 100:
+            self._delete_messages(channel["id"], user_id, session)
 
     @target(action="message delete", description="Delete all given messages")
     def handle_message_delete(self, session: httpx.Client) -> str:
-        relationships = session.get("/users/@me/relationships")
+        channels = session.get("/users/@me/channels").json()
 
-        print(relationships.read())
+        user_id = self._user_id_from_session(session)
+
+        for channel in channels:
+            if channel["type"] != 1:
+                continue
+
+            self._delete_messages(channel, user_id, session)
 
         return "Some status update"

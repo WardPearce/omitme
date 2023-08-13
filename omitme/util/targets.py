@@ -4,6 +4,8 @@ from typing import TYPE_CHECKING, Any, Callable, cast
 import httpx
 from pydantic import BaseModel
 
+from omitme.errors import LoginRequiredError
+
 if TYPE_CHECKING:
     from omitme.util.platform import Platform
 
@@ -24,6 +26,7 @@ def login(func: Callable) -> Callable:
         http_session = cast(httpx.Client, func(self_, driver=self_._driver))
         http_session.base_url = self_.api_url
         http_session.event_hooks = {"response": [raise_on_4xx_5xx]}
+        http_session.headers["User-Agent"] = self_.user_agent
 
         self_._session = http_session
 
@@ -34,8 +37,12 @@ def login(func: Callable) -> Callable:
 
 def target(action: str, description: str | None = None) -> Callable:
     def _func(func: Callable) -> Callable:
+        @wraps(func)
         def _implement(*args, **kwargs) -> Any:
             self_ = cast("Platform", args[0])
+
+            if not self_._session:
+                raise LoginRequiredError()
 
             self_._targets[action] = Target(description=description, callable_=func)
 
