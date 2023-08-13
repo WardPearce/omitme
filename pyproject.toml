@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "omitme"
+version = "0.0.1"
+description = ""
+authors = ["WardPearce <wardpearce@protonmail.com>"]
+readme = "README.md"
+packages = [{include = "omitme"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+selenium = "^4.11.2"
+selenium-wire = "^5.1.0"
+pydantic = "^2.1.1"
+httpx = "^0.24.1"
+
+[tool.poetry.scripts]
+omitme = "omitme:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
