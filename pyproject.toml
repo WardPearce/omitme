@@ -1,21 +1,166 @@
+[tool.briefcase]
+project_name = "Omit me"
+bundle = "com.wardpearce.omitme"
+version = "0.0.1"
+url = "https://github.com/WardPearce/omitme"
+license = "GNU General Public License v3 (GPLv3)"
+author = "WardPearce"
+author_email = "wardpearce@pm.me"
+
+[tool.briefcase.app.omitme]
+formal_name = "Omit me"
+description = "Omit your data"
+long_description = """More details about the app should go here.
+"""
+icon = "omitme/resources/omitme"
+sources = [
+    "omitme",
+]
+test_sources = [
+    "tests",
+]
+
+[tool.briefcase.app.omitme.macOS]
+requires = [
+    "toga-cocoa~=0.3.1",
+    "std-nslog~=1.0.0"
+]
+
+[tool.briefcase.app.omitme.linux]
+requires = [
+    "toga-gtk~=0.3.1",
+]
+
+[tool.briefcase.app.omitme.linux.system.debian]
+system_requires = [
+    # Needed to compile pycairo wheel
+    "libcairo2-dev",
+    # Needed to compile PyGObject wheel
+    "libgirepository1.0-dev",
+]
+
+system_runtime_requires = [
+    # Needed to provide GTK and its GI bindings
+    "gir1.2-gtk-3.0",
+    "libgirepository-1.0-1",
+    # Dependencies that GTK looks for at runtime
+    "libcanberra-gtk3-module",
+    # Needed to provide WebKit2 at runtime
+    # "gir1.2-webkit2-4.0",
+]
+
+[tool.briefcase.app.omitme.linux.system.rhel]
+system_requires = [
+    # Needed to compile pycairo wheel
+    "cairo-gobject-devel",
+    # Needed to compile PyGObject wheel
+    "gobject-introspection-devel",
+]
+
+system_runtime_requires = [
+    # Needed to support Python bindings to GTK
+    "gobject-introspection",
+    # Needed to provide GTK
+    "gtk3",
+    # Dependencies that GTK looks for at runtime
+    "libcanberra-gtk3",
+    # Needed to provide WebKit2 at runtime
+    # "webkit2gtk3",
+]
+
+[tool.briefcase.app.omitme.linux.system.arch]
+system_requires = [
+    # Needed to compile pycairo wheel
+    "cairo",
+    # Needed to compile PyGObject wheel
+    "gobject-introspection",
+    # Runtime dependencies that need to exist so that the
+    # Arch package passes final validation.
+    # Needed to provide GTK
+    "gtk3",
+    # Dependencies that GTK looks for at runtime
+    "libcanberra",
+    # Needed to provide WebKit2
+    # "webkit2gtk",
+]
+
+system_runtime_requires = [
+    # Needed to provide GTK
+    "gtk3",
+    # Needed to provide PyGObject bindings
+    "gobject-introspection-runtime",
+    # Dependencies that GTK looks for at runtime
+    "libcanberra",
+    # Needed to provide WebKit2 at runtime
+    # "webkit2gtk",
+]
+
+[tool.briefcase.app.omitme.linux.appimage]
+manylinux = "manylinux2014"
+
+system_requires = [
+    # Needed to compile pycairo wheel
+    "cairo-gobject-devel",
+    # Needed to compile PyGObject wheel
+    "gobject-introspection-devel",
+    # Needed to provide GTK
+    "gtk3-devel",
+    # Dependencies that GTK looks for at runtime, that need to be
+    # in the build environment to be picked up by linuxdeploy
+    "libcanberra-gtk3",
+    "PackageKit-gtk3-module",
+    "gvfs-client",
+]
+linuxdeploy_plugins = [
+    "DEPLOY_GTK_VERSION=3 gtk",
+]
+
+[tool.briefcase.app.omitme.linux.flatpak]
+flatpak_runtime = "org.gnome.Platform"
+flatpak_runtime_version = "44"
+flatpak_sdk = "org.gnome.Sdk"
+
+[tool.briefcase.app.omitme.windows]
+requires = [
+    "toga-winforms~=0.3.1",
+]
+
+# Mobile deployments
+[tool.briefcase.app.omitme.iOS]
+requires = [
+    "toga-iOS~=0.3.1",
+    "std-nslog~=1.0.0"
+]
+
+[tool.briefcase.app.omitme.android]
+requires = [
+    "toga-android~=0.3.1"
+]
+
+# Web deployments
+[tool.briefcase.app.omitme.web]
+requires = [
+    "toga-web~=0.3.1",
+]
+style_framework = "Shoelace v2.3"
+
 [tool.poetry]
 name = "omitme"
 version = "0.0.1"
 description = ""
 authors = ["WardPearce <wardpearce@protonmail.com>"]
+license = "GNU General Public License v3 (GPLv3)"
 readme = "README.md"
-packages = [{include = "omitme"}]
+
 
 [tool.poetry.dependencies]
 python = "^3.11"
-selenium = "^4.11.2"
-selenium-wire = "^5.1.0"
-pydantic = "^2.1.1"
-httpx = "^0.24.1"
+toga = "^0.2.15"
+briefcase = "^0.3.15"
 
-[tool.poetry.scripts]
-omitme = "omitme:main"
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
