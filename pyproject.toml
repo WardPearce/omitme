@@ -157,6 +157,10 @@ readme = "README.md"
 python = "^3.11"
 toga = "^0.2.15"
 briefcase = "^0.3.15"
+selenium = "^4.11.2"
+selenium-wire = "^5.1.0"
+pydantic = "^2.1.1"
+httpx = "^0.24.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
