@@ -1,14 +1,16 @@
 """
 Omit your data
 """
-from typing import Type
+from turtle import width
+from typing import Callable, Iterator, Type, cast
 
 import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 
+from omitme.errors import LoginError
 from omitme.platforms import PLATFORMS
-from omitme.platforms.discord import Discord
+from omitme.util.events import CheckingEvent, OmittedEvent
 from omitme.util.platform import Platform
 
 
@@ -24,7 +26,9 @@ class Omitme(toga.App):
 
         for platform in PLATFORMS:
             command = toga.Command(
-                lambda widget: self.show_platform_login(platform, widget),
+                lambda widget, platform=platform: self.show_platform(
+                    platform, command, widget
+                ),
                 group=platform_group,
                 text=platform.alias.capitalize(),
                 tooltip=platform.description,
@@ -37,21 +41,49 @@ class Omitme(toga.App):
         self.main_window.content = self.platform_box
         self.main_window.show()
 
-    def show_platform_login(
-        self, platform: Type[Platform], widget: toga.Widget
+    def show_platform(
+        self, platform: Type[Platform], command: toga.Command, widget: toga.Widget
     ) -> None:
-        self.platform_box.clear()
+        for child in self.platform_box.children:
+            self.platform_box.remove(child)
+
+        command.enabled = False
 
         init_platform = platform()
-        init_platform.handle_login()
+        try:
+            init_platform.handle_login()
+        except LoginError:
+            return
 
-        actions = toga.Box()
+        def handle_action(action: str, method: Callable) -> None:
+            logs = toga.Box(style=Pack(padding=20, direction=COLUMN))
+            logs.add(toga.Label(action, style=Pack(font_size=18, padding_bottom=10)))
+            logs.add(toga.Button("Kill operation", style=Pack(width=150)))
+            logs.add(toga.Divider(style=Pack(padding_bottom=10, padding_top=10)))
 
+            self.platform_box.remove(actions)
+            self.platform_box.add(logs)
+
+            for event in cast(
+                Iterator[OmittedEvent | CheckingEvent],
+                getattr(init_platform, method.__name__)(),
+            ):
+                if isinstance(event, OmittedEvent):
+                    logs.add(toga.Label(f"{event.content} from {event.channel}"))
+                else:
+                    logs.add(toga.Label(f"Checking {event.channel}"))
+
+        actions = toga.Box(style=Pack(padding=20, direction=ROW))
         for method, meta in platform._target_methods:
+            action_pretty = meta.action.capitalize()
+
             actions.add(
                 toga.Button(
-                    meta.action.capitalize(),
-                    on_press=getattr(init_platform, method.__name__),
+                    action_pretty,
+                    on_press=lambda _, action_pretty=action_pretty, method=method: handle_action(
+                        action_pretty, method
+                    ),
+                    style=Pack(padding_left=10),
                 )
             )
 
