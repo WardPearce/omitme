@@ -90,7 +90,7 @@ class Omitme(toga.App):
 
                     label.style = Pack(padding_top=5)
 
-                    await asyncio.sleep(0.01)
+                    logs.add(label)
 
         actions = toga.Box(style=Pack(padding=20, direction=ROW))
         for method, meta in platform._target_methods:

@@ -1,5 +1,5 @@
+import asyncio
 import base64
-import time
 from typing import AsyncIterator, Callable
 
 import httpx
@@ -49,17 +49,23 @@ class Discord(Platform):
         ).decode()
 
     async def _handle_ratelimit(
-        self, request: Callable, *args, **kwargs
+        self,
+        request: Callable,
+        depth: int,
+        *args,
+        **kwargs,
     ) -> httpx.Response:
+        depth += 1
+
         try:
             resp: httpx.Response = await request(*args, **kwargs)
         except httpx.HTTPStatusError as error:
             if "X-RateLimit-Reset-After" not in error.response.headers:
-                time.sleep(1)
-                return await self._handle_ratelimit(request, *args, **kwargs)
+                await asyncio.sleep(3 * depth)
+                return await self._handle_ratelimit(request, depth, *args, **kwargs)
 
-            time.sleep(int(error.response.headers["X-RateLimit-Reset-After"]))
-            return await self._handle_ratelimit(request, *args, **kwargs)
+            await asyncio.sleep(int(error.response.headers["X-RateLimit-Reset-After"]))
+            return await self._handle_ratelimit(request, depth, *args, **kwargs)
 
         return resp
 
@@ -76,7 +82,10 @@ class Discord(Platform):
 
         messages = (
             await self._handle_ratelimit(
-                session.get, f"/channels/{channel['id']}/messages", params=params
+                session.get,
+                0,
+                f"/channels/{channel['id']}/messages",
+                params=params,
             )
         ).json()
 
@@ -88,6 +97,7 @@ class Discord(Platform):
 
             await self._handle_ratelimit(
                 session.delete,
+                0,
                 f"/channels/{channel['id']}/messages/{message['id']}",
             )
 
