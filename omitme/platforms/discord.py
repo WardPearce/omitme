@@ -1,10 +1,9 @@
 import base64
 import time
-from typing import Callable, Iterator
+from typing import AsyncIterator, Callable
 
 import httpx
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.wait import WebDriverWait
 from seleniumwire import webdriver
 from seleniumwire.request import HTTPHeaders
 
@@ -23,7 +22,7 @@ class Discord(Platform):
     description = "Manage your discord data"
 
     @login
-    def handle_login(self, driver: webdriver.Chrome) -> httpx.Client:
+    async def handle_login(self, driver: webdriver.Chrome) -> httpx.AsyncClient:
         driver.get(self.login_url)
 
         def get_headers_with_token(current: webdriver.Chrome) -> HTTPHeaders | bool:
@@ -37,46 +36,48 @@ class Discord(Platform):
         except TimeoutException:
             raise LoginError()
 
-        driver.close()
-
         headers.pop("content-length")
         headers.pop("content-type")
 
-        return httpx.Client(headers=headers)
+        return httpx.AsyncClient(headers=headers)
 
-    def _user_id_from_session(self, session: httpx.Client) -> str:
+    def _user_id_from_session(self, session: httpx.AsyncClient) -> str:
         urlsafe_base64 = session.headers["Authorization"].split(".")[0]
 
         return base64.b64decode(
             urlsafe_base64 + "=" * (4 - len(urlsafe_base64) % 4)
         ).decode()
 
-    def _handle_ratelimit(self, request: Callable, *args, **kwargs) -> httpx.Response:
+    async def _handle_ratelimit(
+        self, request: Callable, *args, **kwargs
+    ) -> httpx.Response:
         try:
-            resp: httpx.Response = request(*args, **kwargs)
+            resp: httpx.Response = await request(*args, **kwargs)
         except httpx.HTTPStatusError as error:
             if "X-RateLimit-Reset-After" not in error.response.headers:
                 time.sleep(1)
-                return self._handle_ratelimit(request, *args, **kwargs)
+                return await self._handle_ratelimit(request, *args, **kwargs)
 
             time.sleep(int(error.response.headers["X-RateLimit-Reset-After"]))
-            return self._handle_ratelimit(request, *args, **kwargs)
+            return await self._handle_ratelimit(request, *args, **kwargs)
 
         return resp
 
-    def _delete_messages(
+    async def _delete_messages(
         self,
         channel: dict,
         user_id: str,
-        session: httpx.Client,
+        session: httpx.AsyncClient,
         last_message_id: str | None = None,
-    ) -> Iterator[OmittedEvent]:
+    ) -> AsyncIterator[OmittedEvent]:
         params = {"limit": "100"}
         if last_message_id:
             params["before"] = last_message_id
 
-        messages = self._handle_ratelimit(
-            session.get, f"/channels/{channel['id']}/messages", params=params
+        messages = (
+            await self._handle_ratelimit(
+                session.get, f"/channels/{channel['id']}/messages", params=params
+            )
         ).json()
 
         for message in messages:
@@ -85,7 +86,7 @@ class Discord(Platform):
             if message["author"]["id"] != user_id:
                 continue
 
-            self._handle_ratelimit(
+            await self._handle_ratelimit(
                 session.delete,
                 f"/channels/{channel['id']}/messages/{message['id']}",
             )
@@ -95,33 +96,25 @@ class Discord(Platform):
             )
 
         if len(messages) == 100:
-            for message in self._delete_messages(
+            async for message in self._delete_messages(
                 channel, user_id, session, last_message_id
             ):
                 yield message
 
-    @target(action="delete all messages", description="Delete all given messages")
-    def handle_all_message_delete(
-        self, session: httpx.Client
-    ) -> Iterator[OmittedEvent | CheckingEvent]:
-        channels = session.get("/users/@me/channels").json()
+    @target(action="messages delete", description="Delete all given messages")
+    async def handle_all_message_delete(
+        self, session: httpx.AsyncClient
+    ) -> AsyncIterator[OmittedEvent | CheckingEvent]:
+        async with session as client:
+            channels = (await client.get("/users/@me/channels")).json()
 
-        user_id = self._user_id_from_session(session)
+            user_id = self._user_id_from_session(client)
 
-        for channel in channels:
-            if channel["type"] != 1:
-                continue
+            for channel in channels:
+                if channel["type"] != 1:
+                    continue
 
-            yield CheckingEvent(channel=channel["recipients"][0]["username"])
+                yield CheckingEvent(channel=channel["recipients"][0]["username"])
 
-            for message in self._delete_messages(channel, user_id, session):
-                yield message
-
-    @target(
-        action="delete messages from selected channels",
-        description="Deletes messages from a selected channel or channels",
-    )
-    def handle_selected_message_delete(
-        self, session: httpx.Client
-    ) -> Iterator[OmittedEvent | CheckingEvent]:
-        pass
+                async for message in self._delete_messages(channel, user_id, client):
+                    yield message

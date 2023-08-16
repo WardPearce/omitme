@@ -30,8 +30,8 @@ class Platform(metaclass=PlatformMeta):
         self.user_agent = user_agent
         self.webdriver_options = webdriver.ChromeOptions()
         self.webdriver_options.add_argument(f"user-agent={user_agent}")
-        self._session: httpx.Client | None = None
+        self._session: httpx.AsyncClient | None = None
 
     @abstractmethod
-    def handle_login(self, driver: webdriver.Chrome) -> httpx.Client:
+    async def handle_login(self, driver: webdriver.Chrome) -> httpx.AsyncClient:
         pass

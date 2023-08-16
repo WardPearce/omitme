@@ -1,8 +1,8 @@
 """
 Omit your data
 """
-from turtle import width
-from typing import Callable, Iterator, Type, cast
+import asyncio
+from typing import Callable, Type
 
 import toga
 from toga.style import Pack
@@ -24,11 +24,17 @@ class Omitme(toga.App):
 
         platform_group = toga.Group("Platforms")
 
+        class ShowPlatform:
+            def __init__(self, ctx: "Omitme", platform: type[Platform]) -> None:
+                self._ctx = ctx
+                self._platform = platform
+
+            async def handle(self, _) -> None:
+                await self._ctx.show_platform(self._platform)
+
         for platform in PLATFORMS:
             command = toga.Command(
-                lambda widget, platform=platform: self.show_platform(
-                    platform, command, widget
-                ),
+                ShowPlatform(self, platform).handle,
                 group=platform_group,
                 text=platform.alias.capitalize(),
                 tooltip=platform.description,
@@ -41,37 +47,50 @@ class Omitme(toga.App):
         self.main_window.content = self.platform_box
         self.main_window.show()
 
-    def show_platform(
-        self, platform: Type[Platform], command: toga.Command, widget: toga.Widget
-    ) -> None:
+    async def show_platform(self, platform: Type[Platform]) -> None:
         for child in self.platform_box.children:
             self.platform_box.remove(child)
 
-        command.enabled = False
-
         init_platform = platform()
         try:
-            init_platform.handle_login()
+            await init_platform.handle_login()
         except LoginError:
             return
 
-        def handle_action(action: str, method: Callable) -> None:
-            logs = toga.Box(style=Pack(padding=20, direction=COLUMN))
-            logs.add(toga.Label(action, style=Pack(font_size=18, padding_bottom=10)))
-            logs.add(toga.Button("Kill operation", style=Pack(width=150)))
-            logs.add(toga.Divider(style=Pack(padding_bottom=10, padding_top=10)))
+        class Action:
+            def __init__(
+                self, ctx: "Omitme", platform: Platform, action: str, method: Callable
+            ) -> None:
+                self._ctx = ctx
+                self._platform = platform
+                self._action = action
+                self._method = method
 
-            self.platform_box.remove(actions)
-            self.platform_box.add(logs)
+            async def handle(self, _) -> None:
+                self._ctx.platform_box.remove(actions)
 
-            for event in cast(
-                Iterator[OmittedEvent | CheckingEvent],
-                getattr(init_platform, method.__name__)(),
-            ):
-                if isinstance(event, OmittedEvent):
-                    logs.add(toga.Label(f"{event.content} from {event.channel}"))
-                else:
-                    logs.add(toga.Label(f"Checking {event.channel}"))
+                logs = toga.Box(style=Pack(padding=20, direction=COLUMN))
+                logs.add(
+                    toga.Label(
+                        self._action, style=Pack(font_size=18, padding_bottom=10)
+                    )
+                )
+                logs.add(toga.Button("Kill operation", style=Pack(width=150)))
+                logs.add(toga.Divider(style=Pack(padding_bottom=10, padding_top=10)))
+
+                self._ctx.platform_box.add(logs)
+
+                async for event in getattr(self._platform, self._method.__name__)():
+                    event: OmittedEvent | CheckingEvent = event
+
+                    if isinstance(event, OmittedEvent):
+                        label = toga.Label(f"{event.content} from {event.channel}")
+                    else:
+                        label = toga.Label(f"Checking {event.channel}")
+
+                    label.style = Pack(padding_top=5)
+
+                    await asyncio.sleep(0.01)
 
         actions = toga.Box(style=Pack(padding=20, direction=ROW))
         for method, meta in platform._target_methods:
@@ -80,9 +99,7 @@ class Omitme(toga.App):
             actions.add(
                 toga.Button(
                     action_pretty,
-                    on_press=lambda _, action_pretty=action_pretty, method=method: handle_action(
-                        action_pretty, method
-                    ),
+                    on_press=Action(self, init_platform, action_pretty, method).handle,
                     style=Pack(padding_left=10),
                 )
             )

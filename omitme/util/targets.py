@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import TYPE_CHECKING, Any, Callable, cast
+from typing import TYPE_CHECKING, Any, AsyncIterator, Callable, cast
 
 import httpx
 from pydantic import BaseModel
@@ -16,17 +16,18 @@ class Target(BaseModel):
     action: str
 
 
-def raise_on_4xx_5xx(response: httpx.Response):
+async def raise_on_4xx_5xx(response: httpx.Response):
     response.raise_for_status()
 
 
 def login(func: Callable) -> Callable:
-    def _implement(*args, **kwargs) -> Any:
+    @wraps(func)
+    async def _implement(*args, **kwargs) -> Any:
         self_ = cast("Platform", args[0])
 
         driver = webdriver.Chrome(options=self_.webdriver_options)
 
-        self_._session = cast(httpx.Client, func(self_, driver=driver))
+        self_._session = cast(httpx.AsyncClient, await func(self_, driver=driver))
         self_._session.base_url = self_.api_url
         self_._session.event_hooks = {"response": [raise_on_4xx_5xx]}
         self_._session.headers["User-Agent"] = self_.user_agent
@@ -46,13 +47,14 @@ def target(action: str, description: str | None = None) -> Callable:
         )
 
         @wraps(func)
-        def _implement(*args, **kwargs) -> Any:
+        async def _implement(*args, **kwargs) -> AsyncIterator[Any]:
             self_ = cast("Platform", args[0])
 
             if not self_._session:
                 raise LoginRequiredError()
 
-            return func(self_, session=self_._session)
+            async for result in func(self_, session=self_._session):
+                yield result
 
         return _implement
 
