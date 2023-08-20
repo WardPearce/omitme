@@ -90,15 +90,20 @@ class Omitme(toga.App):
                     event: OmittedEvent | CheckingEvent | FailEvent = event
 
                     if isinstance(event, OmittedEvent):
-                        label = toga.Label(f"{event.content} from {event.channel}")
+                        label = toga.Label(
+                            f'Deleted "{event.content}"',
+                        )
                     elif isinstance(event, FailEvent):
-                        label = toga.Label(f"Failed to delete {event.content}")
+                        continue
                     else:
-                        label = toga.Label(f"Checking {event.channel}")
+                        label = toga.Label(
+                            f"Checking {event.channel}",
+                            style=Pack(font_weight="bold", font_size=13),
+                        )
 
                     label.style = Pack(padding_top=5)
 
-                    logs_content.add(label)
+                    logs_content.insert(0, label)
 
         actions = toga.Box(style=Pack(padding=20, direction=ROW))
         for method, meta in platform._target_methods:
