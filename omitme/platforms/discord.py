@@ -123,7 +123,7 @@ class Discord(Platform):
     @target(action="messages delete", description="Delete all given messages")
     async def handle_all_message_delete(
         self, session: httpx.AsyncClient
-    ) -> AsyncIterator[OmittedEvent | CheckingEvent]:
+    ) -> AsyncIterator[OmittedEvent | CheckingEvent | FailEvent]:
         async with session as client:
             channels = (await client.get("/users/@me/channels")).json()
 

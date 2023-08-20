@@ -25,6 +25,7 @@ files = [
 ]
 
 [package.dependencies]
+exceptiongroup = {version = "*", markers = "python_version < \"3.11\""}
 idna = ">=2.8"
 sniffio = ">=1.1"
 
@@ -37,7 +38,7 @@ trio = ["trio (<0.22)"]
 name = "arrow"
 version = "1.2.3"
 description = "Better dates & times for Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -71,7 +72,7 @@ tests-no-zope = ["cloudpickle", "hypothesis", "mypy (>=1.1.1)", "pympler", "pyte
 name = "binaryornot"
 version = "0.4.4"
 description = "Ultra-lightweight pure Python package to check if a file is binary or text."
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -98,7 +99,7 @@ files = [
 name = "briefcase"
 version = "0.3.15"
 description = "Tools to support converting a Python project into a standalone native application."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -118,6 +119,7 @@ psutil = ">=5.9,<6.0"
 requests = ">=2.28,<3.0"
 rich = ">=12.6,<14.0"
 setuptools = ">=60"
+tomli = {version = ">=2.0,<3.0", markers = "python_version <= \"3.10\""}
 tomli-w = ">=1.0,<2.0"
 wheel = ">=0.37"
 
@@ -221,7 +223,7 @@ files = [
 name = "build"
 version = "0.10.0"
 description = "A simple, correct Python build frontend"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">= 3.7"
 files = [
@@ -233,6 +235,7 @@ files = [
 colorama = {version = "*", markers = "os_name == \"nt\""}
 packaging = ">=19.0"
 pyproject_hooks = "*"
+tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
 
 [package.extras]
 docs = ["furo (>=2021.08.31)", "sphinx (>=4.0,<5.0)", "sphinx-argparse-cli (>=1.5)", "sphinx-autodoc-typehints (>=1.10)"]
@@ -333,7 +336,7 @@ pycparser = "*"
 name = "chardet"
 version = "5.2.0"
 description = "Universal encoding detector for Python 3"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -345,7 +348,7 @@ files = [
 name = "charset-normalizer"
 version = "3.2.0"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7.0"
 files = [
@@ -428,24 +431,39 @@ files = [
 
 [[package]]
 name = "click"
-version = "8.1.6"
+version = "8.1.7"
 description = "Composable command line interface toolkit"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "click-8.1.6-py3-none-any.whl", hash = "sha256:fa244bb30b3b5ee2cae3da8f55c9e5e0c0e86093306301fb418eb9dc40fbded5"},
-    {file = "click-8.1.6.tar.gz", hash = "sha256:48ee849951919527a045bfe3bf7baa8a959c423134e1a5b98c05c20ba75a1cbd"},
+    {file = "click-8.1.7-py3-none-any.whl", hash = "sha256:ae74fb96c20a0277a1d615f1e4d73c8414f5a98db8b799a7931d1582f3390c28"},
+    {file = "click-8.1.7.tar.gz", hash = "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"},
 ]
 
 [package.dependencies]
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
+name = "clr-loader"
+version = "0.2.6"
+description = "Generic pure Python loader for .NET runtimes"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "clr_loader-0.2.6-py3-none-any.whl", hash = "sha256:79bbfee4bf6ac2f4836d89af2c39e0c32dce5d0c062596185aef380f317507a6"},
+    {file = "clr_loader-0.2.6.tar.gz", hash = "sha256:019348ae6b6a83c7a406d14537c277cecf7a3a53b263ec342c81ded5845a67ee"},
+]
+
+[package.dependencies]
+cffi = ">=1.13"
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
-category = "main"
+category = "dev"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 files = [
@@ -457,7 +475,7 @@ files = [
 name = "cookiecutter"
 version = "2.3.0"
 description = "A command-line utility that creates projects from project templates, e.g. creating a Python package project from a Python package project template."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -525,7 +543,7 @@ test-randomorder = ["pytest-randomly"]
 name = "dmgbuild"
 version = "1.6.1"
 description = "macOS command line utility to build disk images"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -547,7 +565,7 @@ test = ["pytest", "pytest-cov", "pytest-tldr"]
 name = "ds-store"
 version = "1.3.1"
 description = "Manipulate Finder .DS_Store files from Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -582,7 +600,7 @@ test = ["pytest (>=6)"]
 name = "gbulb"
 version = "0.6.4"
 description = "GLib event loop for tulip (PEP 3156)"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -597,7 +615,7 @@ pygobject = ">=3.14.0"
 name = "gitdb"
 version = "4.0.10"
 description = "Git Object Database"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -612,7 +630,7 @@ smmap = ">=3.0.1,<6"
 name = "gitpython"
 version = "3.1.32"
 description = "GitPython is a Python library used to interact with Git repositories"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -749,7 +767,7 @@ files = [
 name = "jinja2"
 version = "3.1.2"
 description = "A very fast and expressive template engine."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -779,7 +797,7 @@ files = [
 name = "mac-alias"
 version = "2.2.2"
 description = "Generate/parse Mac OS Alias records from Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -796,7 +814,7 @@ test = ["pytest", "pytest-cov", "pytest-tldr"]
 name = "markdown-it-py"
 version = "3.0.0"
 description = "Python port of markdown-it. Markdown parsing, done right!"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -821,7 +839,7 @@ testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
 name = "markupsafe"
 version = "2.1.3"
 description = "Safely add untrusted strings to HTML/XML markup."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -881,7 +899,7 @@ files = [
 name = "mdurl"
 version = "0.1.2"
 description = "Markdown URL utilities"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -908,7 +926,7 @@ attrs = ">=19.2.0"
 name = "packaging"
 version = "23.1"
 description = "Core utilities for Python packages"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -920,7 +938,7 @@ files = [
 name = "pip"
 version = "23.2.1"
 description = "The PyPA recommended tool for installing Python packages."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -932,7 +950,7 @@ files = [
 name = "platformdirs"
 version = "3.10.0"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -963,7 +981,7 @@ dev = ["pre-commit", "tox"]
 name = "psutil"
 version = "5.9.5"
 description = "Cross-platform lib for process and system monitoring in Python."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
@@ -1002,7 +1020,7 @@ files = [
 name = "pycairo"
 version = "1.24.0"
 description = "Python interface for cairo"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -1185,7 +1203,7 @@ test = ["codecov (>=2.0.5)", "hypothesis (>=3.5.3)", "mock (>=1.0.1)", "pytest (
 name = "pygments"
 version = "2.16.1"
 description = "Pygments is a syntax highlighting package written in Python."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1200,7 +1218,7 @@ plugins = ["importlib-metadata"]
 name = "pygobject"
 version = "3.44.1"
 description = "Python bindings for GObject Introspection"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7, <4"
 files = [
@@ -1248,13 +1266,16 @@ diagrams = ["jinja2", "railroad-diagrams"]
 name = "pyproject-hooks"
 version = "1.0.0"
 description = "Wrappers to call pyproject.toml-based build backend hooks."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
     {file = "pyproject_hooks-1.0.0-py3-none-any.whl", hash = "sha256:283c11acd6b928d2f6a7c73fa0d01cb2bdc5f07c57a2eeb6e83d5e56b97976f8"},
     {file = "pyproject_hooks-1.0.0.tar.gz", hash = "sha256:f271b298b97f5955d53fb12b72c1fb1948c22c1a6b70b315c54cedaca0264ef5"},
 ]
+
+[package.dependencies]
+tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
 
 [[package]]
 name = "pysocks"
@@ -1283,9 +1304,11 @@ files = [
 
 [package.dependencies]
 colorama = {version = "*", markers = "sys_platform == \"win32\""}
+exceptiongroup = {version = ">=1.0.0rc8", markers = "python_version < \"3.11\""}
 iniconfig = "*"
 packaging = "*"
 pluggy = ">=0.12,<2.0"
+tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
 
 [package.extras]
 testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
@@ -1294,7 +1317,7 @@ testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "no
 name = "python-dateutil"
 version = "2.8.2"
 description = "Extensions to the standard Python datetime module"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 files = [
@@ -1309,7 +1332,7 @@ six = ">=1.5"
 name = "python-slugify"
 version = "8.0.1"
 description = "A Python slugify application that also handles Unicode"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1325,33 +1348,24 @@ unidecode = ["Unidecode (>=1.1.1)"]
 
 [[package]]
 name = "pythonnet"
-version = "2.5.2"
-description = ".Net and Mono integration for Python"
-category = "main"
+version = "3.0.1"
+description = ".NET and Mono integration for Python"
+category = "dev"
 optional = false
-python-versions = "*"
+python-versions = "<3.12,>=3.7"
 files = [
-    {file = "pythonnet-2.5.2-cp27-cp27m-win32.whl", hash = "sha256:d519bbc7b1cd3999651efc594d91cb67c46d1d8466dad3d83b578102e58d05bd"},
-    {file = "pythonnet-2.5.2-cp27-cp27m-win_amd64.whl", hash = "sha256:c02f53d0e61b202cddf3198fac9553d5b4ee0ea0cc4fe658c2ed69ab24def276"},
-    {file = "pythonnet-2.5.2-cp35-cp35m-win32.whl", hash = "sha256:840bdef89b378663d73f74f18895b6d8630d1f5671457a1db5ffb68179d85582"},
-    {file = "pythonnet-2.5.2-cp35-cp35m-win_amd64.whl", hash = "sha256:d8e5b27de1e2cfb69b88782ac5cdf605b1a73598a85d86570e46961126628dbb"},
-    {file = "pythonnet-2.5.2-cp36-cp36m-win32.whl", hash = "sha256:62645c29840c4a877d66e047f3e065b2e5a1a66431a99bce8d42a5af3a093ee1"},
-    {file = "pythonnet-2.5.2-cp36-cp36m-win_amd64.whl", hash = "sha256:058e536062d1585d07ec5f2cf16aefcfc8eb8179faa90e5db0063d358469d025"},
-    {file = "pythonnet-2.5.2-cp37-cp37m-win32.whl", hash = "sha256:cc77fc63e2afb0a80199ab44ced4fdfb78c19d8030063c345c80740d15380dd9"},
-    {file = "pythonnet-2.5.2-cp37-cp37m-win_amd64.whl", hash = "sha256:80c8f5c9bd10440a73eb6aedbbacb2f3dd7701b474816f5ef7636f529d838d38"},
-    {file = "pythonnet-2.5.2-cp38-cp38-win32.whl", hash = "sha256:41a607b7304e9efc6d4d8db438d6018a17c6637e8b8998848ff5c2a7a1b4687c"},
-    {file = "pythonnet-2.5.2-cp38-cp38-win_amd64.whl", hash = "sha256:00a4fed9fc05b4efbe8947c79dc0799cffbca4c89e3e068e70b6618f20c906f2"},
-    {file = "pythonnet-2.5.2.tar.gz", hash = "sha256:b7287480a1f6ae4b6fc80d775446d8af00e051ca1646b6cc3d32c5d3a461ede3"},
+    {file = "pythonnet-3.0.1-py3-none-any.whl", hash = "sha256:46882dabb3532b8353f42815b21176545e1a34a5e4730b3cb04a8e430ae9f9ec"},
+    {file = "pythonnet-3.0.1.tar.gz", hash = "sha256:ed4f7f7f95515404112ddb3da1638e1a1013cb56e64c48c4fa60303f02b0a3dd"},
 ]
 
 [package.dependencies]
-pycparser = "*"
+clr-loader = ">=0.2.2,<0.3.0"
 
 [[package]]
 name = "pyyaml"
 version = "6.0.1"
 description = "YAML parser and emitter for Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1401,7 +1415,7 @@ files = [
 name = "requests"
 version = "2.31.0"
 description = "Python HTTP for Humans."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1423,7 +1437,7 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 name = "rich"
 version = "13.5.2"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7.0"
 files = [
@@ -1442,7 +1456,7 @@ jupyter = ["ipywidgets (>=7.5.1,<9)"]
 name = "rubicon-objc"
 version = "0.4.6"
 description = "A bridge between an Objective C runtime environment and Python."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1505,26 +1519,26 @@ dev = ["black", "bumpversion", "coverage", "flake8", "gunicorn", "httpbin", "iso
 
 [[package]]
 name = "setuptools"
-version = "68.0.0"
+version = "68.1.2"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
-category = "main"
+category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "setuptools-68.0.0-py3-none-any.whl", hash = "sha256:11e52c67415a381d10d6b462ced9cfb97066179f0e871399e006c4ab101fc85f"},
-    {file = "setuptools-68.0.0.tar.gz", hash = "sha256:baf1fdb41c6da4cd2eae722e135500da913332ab3f2f5c7d33af9b492acb5235"},
+    {file = "setuptools-68.1.2-py3-none-any.whl", hash = "sha256:3d8083eed2d13afc9426f227b24fd1659489ec107c0e86cec2ffdde5c92e790b"},
+    {file = "setuptools-68.1.2.tar.gz", hash = "sha256:3d4dfa6d95f1b101d695a6160a7626e15583af71a5f52176efa5d39a054d475d"},
 ]
 
 [package.extras]
-docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
-testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pip (>=19.1)", "pip-run (>=8.8)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-ruff", "pytest-timeout", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
+docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5,<=7.1.2)", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
+testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.develop (>=7.21)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pip (>=19.1)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-ruff", "pytest-timeout", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
 testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
 [[package]]
 name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 files = [
@@ -1536,7 +1550,7 @@ files = [
 name = "smmap"
 version = "5.0.0"
 description = "A pure Python implementation of a sliding window memory map manager"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1572,7 +1586,7 @@ files = [
 name = "text-unidecode"
 version = "1.3"
 description = "The most basic Text::Unidecode port"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 files = [
@@ -1582,26 +1596,26 @@ files = [
 
 [[package]]
 name = "toga"
-version = "0.2.15"
+version = "0.3.1"
 description = "A Python native, OS native GUI toolkit."
-category = "main"
+category = "dev"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 files = [
-    {file = "toga-0.2.15-py3-none-any.whl", hash = "sha256:8cd2b2a084998ea28b96a34315a86abdbe596958acfe721f8fe1520645060620"},
-    {file = "toga-0.2.15.tar.gz", hash = "sha256:e96ca2ccb1322ee22fdc93ae3d1614f14b1148dcdd7fbca28a36f097ed1b3dfa"},
+    {file = "toga-0.3.1-py3-none-any.whl", hash = "sha256:a909bee2269ed416fcc77052401bf7ae1dd7fe57313a5c5d1288ab4b2f476841"},
+    {file = "toga-0.3.1.tar.gz", hash = "sha256:026a9074d038d3a61e67f7217b5eb2d423effccb88892099922b7e0e88af6e8f"},
 ]
 
 [package.dependencies]
-toga-cocoa = {version = "*", markers = "sys_platform == \"darwin\""}
-toga-gtk = {version = "*", markers = "sys_platform == \"linux\""}
-toga-winforms = {version = "*", markers = "sys_platform == \"win32\""}
+toga-cocoa = {version = "0.3.1", markers = "sys_platform == \"darwin\""}
+toga-gtk = {version = "0.3.1", markers = "sys_platform in \"freebsd\" or sys_platform == \"linux\""}
+toga-winforms = {version = "0.3.1", markers = "sys_platform == \"win32\""}
 
 [[package]]
 name = "toga-cocoa"
 version = "0.3.1"
 description = "A Cocoa (macOS) backend for the Toga widget toolkit."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1617,7 +1631,7 @@ toga-core = "0.3.1"
 name = "toga-core"
 version = "0.3.1"
 description = "A Python native, OS native GUI toolkit."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1636,7 +1650,7 @@ docs = ["furo (==2022.12.7)", "pyenchant (==3.2.2)", "sphinx (==6.1.3)", "sphinx
 name = "toga-gtk"
 version = "0.3.1"
 description = "A GTK backend for the Toga widget toolkit."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -1652,25 +1666,37 @@ toga-core = "0.3.1"
 
 [[package]]
 name = "toga-winforms"
-version = "0.2.15"
-description = "A Microsoft .Net backend for the Toga widget toolkit using the WinForms API."
-category = "main"
+version = "0.3.1"
+description = "A Windows backend for the Toga widget toolkit using the WinForms API."
+category = "dev"
 optional = false
-python-versions = "*"
+python-versions = ">=3.6"
 files = [
-    {file = "toga-winforms-0.2.15.tar.gz", hash = "sha256:067526db09fa0968d8032a757d6678e61968d05bf45ae956b1bdaf48beab3788"},
-    {file = "toga_winforms-0.2.15-py3-none-any.whl", hash = "sha256:af19cb89cc4791a9b16aff4b195cfd810bc760a0bd48ef4564eae355d2e02401"},
+    {file = "toga-winforms-0.3.1.tar.gz", hash = "sha256:b80ecc364a1d8fd8d07574fbea39c955ede20d4f1bc8342f5874098c28d4a060"},
+    {file = "toga_winforms-0.3.1-py3-none-any.whl", hash = "sha256:c92d480ad21e6d625dcce38482e2f583476031905a2017daf83d612850dfb3f8"},
 ]
 
 [package.dependencies]
-pythonnet = "*"
-toga-core = ">=0.2.15"
+pythonnet = ">=3.0.0"
+toga-core = "0.3.1"
+
+[[package]]
+name = "tomli"
+version = "2.0.1"
+description = "A lil' TOML parser"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
+    {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
+]
 
 [[package]]
 name = "tomli-w"
 version = "1.0.0"
 description = "A lil' TOML writer"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1682,7 +1708,7 @@ files = [
 name = "travertino"
 version = "0.2.0"
 description = "Travertino is a set of constants and utilities for describing user interfaces"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1708,6 +1734,7 @@ files = [
 [package.dependencies]
 attrs = ">=20.1.0"
 cffi = {version = ">=1.14", markers = "os_name == \"nt\" and implementation_name != \"pypy\""}
+exceptiongroup = {version = ">=1.0.0rc9", markers = "python_version < \"3.11\""}
 idna = "*"
 outcome = "*"
 sniffio = "*"
@@ -1767,7 +1794,7 @@ zstd = ["zstandard (>=0.18.0)"]
 name = "wheel"
 version = "0.41.1"
 description = "A built-package format for Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1854,5 +1881,5 @@ cffi = ["cffi (>=1.11)"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.11"
-content-hash = "d4db4e296cbc40460b759463c34ce82be7424b45c5b191bb1b3fc747c0853bbb"
+python-versions = ">=3.10,<3.12"
+content-hash = "19ea072c46400e2ad2889dddbd5a47ee530ab9b208c002bfdf3cc1de77c38d90"

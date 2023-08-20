@@ -1,7 +1,6 @@
 """
 Omit your data
 """
-import asyncio
 from typing import Callable, Type
 
 import toga
