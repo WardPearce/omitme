@@ -153,8 +153,7 @@ license = "GNU General Public License v3 (GPLv3)"
 readme = "README.md"
 
 [tool.poetry.scripts]
-omitme = "omitme:cli.main"
-
+omitme-cli = "omitme:cli.main"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"
@@ -163,6 +162,7 @@ selenium-wire = "^5.1.0"
 pydantic = "^2.1.1"
 httpx = "^0.24.1"
 click = "^8.1.7"
+aiofiles = "^23.2.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"

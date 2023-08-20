@@ -1,6 +1,7 @@
 import httpx
 from seleniumwire import webdriver
 
+from omitme.util.accounts import Accounts
 from omitme.util.platform import Platform
 from omitme.util.targets import login
 
@@ -13,5 +14,7 @@ class Matrix(Platform):
     description = "Manage your matrix data, e.g. Element.io"
 
     @login
-    def handle_login(self, driver: webdriver.Chrome) -> httpx.AsyncClient:
+    def handle_login(
+        self, driver: webdriver.Chrome, accounts: Accounts
+    ) -> httpx.AsyncClient:
         return httpx.AsyncClient()

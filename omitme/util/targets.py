@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from seleniumwire import webdriver
 
 from omitme.errors import LoginRequiredError
+from omitme.util.accounts import Accounts
 
 if TYPE_CHECKING:
     from omitme.util.platform import Platform
@@ -27,7 +28,10 @@ def login(func: Callable) -> Callable:
 
         driver = webdriver.Chrome(options=self_.webdriver_options)
 
-        self_._session = cast(httpx.AsyncClient, await func(self_, driver=driver))
+        self_._session = cast(
+            httpx.AsyncClient,
+            await func(self_, driver=driver, accounts=self_._account),
+        )
         self_._session.base_url = self_.api_url
         self_._session.event_hooks = {"response": [raise_on_4xx_5xx]}
         self_._session.headers["User-Agent"] = self_.user_agent

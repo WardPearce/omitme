@@ -8,6 +8,7 @@ from seleniumwire import webdriver
 from seleniumwire.request import HTTPHeaders
 
 from omitme.errors import LoginError
+from omitme.util.accounts import Accounts
 from omitme.util.events import CheckingEvent, FailEvent, OmittedEvent
 from omitme.util.platform import Platform
 from omitme.util.targets import login, target
@@ -22,7 +23,9 @@ class Discord(Platform):
     description = "Manage your discord data"
 
     @login
-    async def handle_login(self, driver: webdriver.Chrome) -> httpx.AsyncClient:
+    async def handle_login(
+        self, driver: webdriver.Chrome, accounts: Accounts
+    ) -> httpx.AsyncClient:
         driver.get(self.login_url)
 
         def get_headers_with_token(current: webdriver.Chrome) -> HTTPHeaders | bool:
@@ -39,7 +42,13 @@ class Discord(Platform):
         headers.pop("content-length")
         headers.pop("content-type")
 
-        return httpx.AsyncClient(headers=headers)
+        session = httpx.AsyncClient(headers=headers)
+
+        await accounts.add(
+            self._user_id_from_session(session), session={"headers": headers}
+        )
+
+        return session
 
     def _user_id_from_session(self, session: httpx.AsyncClient) -> str:
         urlsafe_base64 = session.headers["Authorization"].split(".")[0]

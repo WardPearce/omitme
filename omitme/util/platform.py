@@ -4,6 +4,7 @@ from typing import Callable
 import httpx
 from seleniumwire import webdriver
 
+from omitme.util.accounts import Accounts
 from omitme.util.targets import Target
 
 
@@ -31,7 +32,17 @@ class Platform(metaclass=PlatformMeta):
         self.webdriver_options = webdriver.ChromeOptions()
         self.webdriver_options.add_argument(f"user-agent={user_agent}")
         self._session: httpx.AsyncClient | None = None
+        self._account = Accounts(self.alias)
+
+    async def list_accounts(self) -> list[str]:
+        return await self._account.list()
+
+    async def load_account(self, account: str) -> None:
+        account_auth = await self._account.get(account)
+        self._session = httpx.AsyncClient(**account_auth, base_url=self.api_url)
 
     @abstractmethod
-    async def handle_login(self, driver: webdriver.Chrome) -> httpx.AsyncClient:
+    async def handle_login(
+        self, driver: webdriver.Chrome, accounts: Accounts
+    ) -> httpx.AsyncClient:
         pass
