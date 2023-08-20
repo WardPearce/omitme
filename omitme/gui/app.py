@@ -22,21 +22,26 @@ class Omitme(toga.App):
         platform_group = toga.Group("Platforms")
 
         class ShowPlatform:
-            def __init__(self, ctx: "Omitme", platform: type[Platform]) -> None:
+            def __init__(
+                self, ctx: "Omitme", command: toga.Command, platform: type[Platform]
+            ) -> None:
                 self._ctx = ctx
                 self._platform = platform
+                self._command = command
 
             async def handle(self, _) -> None:
-                await self._ctx.show_platform(self._platform)
+                await self._ctx.show_platform(self._command, self._platform)
 
         for platform in PLATFORMS:
             command = toga.Command(
-                ShowPlatform(self, platform).handle,
+                # Placeholder func
+                lambda _: (),
                 group=platform_group,
                 text=platform.alias.capitalize(),
                 tooltip=platform.description,
                 icon=f"resources/platforms/{platform.icon}",
             )
+            command.action = ShowPlatform(self, command, platform).handle
 
             self.commands.add(command)
             self.main_window.toolbar.add(command)
@@ -44,7 +49,11 @@ class Omitme(toga.App):
         self.main_window.content = self.platform_box
         self.main_window.show()
 
-    async def show_platform(self, platform: Type[Platform]) -> None:
+    async def show_platform(
+        self, command: toga.Command, platform: Type[Platform]
+    ) -> None:
+        command.enabled = False
+
         for child in self.platform_box.children:
             self.platform_box.remove(child)
 
