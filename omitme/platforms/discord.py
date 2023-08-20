@@ -8,7 +8,7 @@ from seleniumwire import webdriver
 from seleniumwire.request import HTTPHeaders
 
 from omitme.errors import LoginError
-from omitme.util.events import CheckingEvent, OmittedEvent
+from omitme.util.events import CheckingEvent, FailEvent, OmittedEvent
 from omitme.util.platform import Platform
 from omitme.util.targets import login, target
 from omitme.util.wait_for import wait_until_or_close
@@ -60,12 +60,16 @@ class Discord(Platform):
         try:
             resp: httpx.Response = await request(*args, **kwargs)
         except httpx.HTTPStatusError as error:
-            if "X-RateLimit-Reset-After" not in error.response.headers:
-                await asyncio.sleep(3 * depth)
+            if error.response.status_code == 429:
+                try:
+                    message = error.response.json()
+                    await asyncio.sleep(message["retry_after"])
+                except httpx.ResponseNotRead:
+                    await asyncio.sleep(3 * depth)
+
                 return await self._handle_ratelimit(request, depth, *args, **kwargs)
 
-            await asyncio.sleep(int(error.response.headers["X-RateLimit-Reset-After"]))
-            return await self._handle_ratelimit(request, depth, *args, **kwargs)
+            raise error
 
         return resp
 
@@ -75,7 +79,7 @@ class Discord(Platform):
         user_id: str,
         session: httpx.AsyncClient,
         last_message_id: str | None = None,
-    ) -> AsyncIterator[OmittedEvent]:
+    ) -> AsyncIterator[OmittedEvent | FailEvent]:
         params = {"limit": "100"}
         if last_message_id:
             params["before"] = last_message_id
@@ -95,14 +99,19 @@ class Discord(Platform):
             if message["author"]["id"] != user_id:
                 continue
 
-            await self._handle_ratelimit(
-                session.delete,
-                0,
-                f"/channels/{channel['id']}/messages/{message['id']}",
-            )
+            try:
+                await self._handle_ratelimit(
+                    session.delete,
+                    0,
+                    f"/channels/{channel['id']}/messages/{message['id']}",
+                )
+            except httpx.HTTPStatusError:
+                yield FailEvent(content=message["content"])
+                continue
 
             yield OmittedEvent(
-                channel=message["author"]["username"], content=message["content"]
+                channel=channel["recipients"][0]["global_name"],
+                content=message["content"],
             )
 
         if len(messages) == 100:

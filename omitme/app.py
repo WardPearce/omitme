@@ -10,13 +10,11 @@ from toga.style.pack import COLUMN, ROW
 
 from omitme.errors import LoginError
 from omitme.platforms import PLATFORMS
-from omitme.util.events import CheckingEvent, OmittedEvent
+from omitme.util.events import CheckingEvent, FailEvent, OmittedEvent
 from omitme.util.platform import Platform
 
 
 class Omitme(toga.App):
-    platform_box: toga.Box
-
     def startup(self) -> None:
         self.main_window = toga.MainWindow(title=self.formal_name)
 
@@ -69,28 +67,30 @@ class Omitme(toga.App):
             async def handle(self, _) -> None:
                 self._ctx.platform_box.remove(actions)
 
-                logs = toga.Box(style=Pack(padding=20, direction=COLUMN))
-                logs.add(
-                    toga.Label(
-                        self._action, style=Pack(font_size=18, padding_bottom=10)
-                    )
+                logs_content = toga.Box(style=Pack(direction=COLUMN))
+
+                logs = toga.ScrollContainer(
+                    style=Pack(padding=20, height=600),
+                    content=logs_content,
+                    horizontal=False,
+                    vertical=True,
                 )
-                logs.add(toga.Button("Kill operation", style=Pack(width=150)))
-                logs.add(toga.Divider(style=Pack(padding_bottom=10, padding_top=10)))
 
                 self._ctx.platform_box.add(logs)
 
                 async for event in getattr(self._platform, self._method.__name__)():
-                    event: OmittedEvent | CheckingEvent = event
+                    event: OmittedEvent | CheckingEvent | FailEvent = event
 
                     if isinstance(event, OmittedEvent):
                         label = toga.Label(f"{event.content} from {event.channel}")
+                    elif isinstance(event, FailEvent):
+                        label = toga.Label(f"Failed to delete {event.content}")
                     else:
                         label = toga.Label(f"Checking {event.channel}")
 
                     label.style = Pack(padding_top=5)
 
-                    logs.add(label)
+                    logs_content.add(label)
 
         actions = toga.Box(style=Pack(padding=20, direction=ROW))
         for method, meta in platform._target_methods:

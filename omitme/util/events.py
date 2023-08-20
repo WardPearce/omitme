@@ -8,3 +8,11 @@ class OmittedEvent(BaseModel):
 
 class CheckingEvent(BaseModel):
     channel: str
+
+
+class RateLimitEvent(BaseModel):
+    content: str
+
+
+class FailEvent(BaseModel):
+    content: str
