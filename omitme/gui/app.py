@@ -43,7 +43,6 @@ class Omitme(toga.App):
             )
             command.action = ShowPlatform(self, command, platform).handle
 
-            self.commands.add(command)
             self.main_window.toolbar.add(command)
 
         self.main_window.content = self.platform_box

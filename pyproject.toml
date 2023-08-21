@@ -24,6 +24,7 @@ requires = [
     "pydantic>=2.1.1",
     "httpx>=0.24.1",
     "aiofiles>=23.2.1",
+    "yarl>=1.9.2",
     "setuptools"
 ]
 
@@ -170,6 +171,7 @@ pydantic = "^2.1.1"
 httpx = "^0.24.1"
 click = "^8.1.7"
 aiofiles = "^23.2.1"
+yarl = "^1.9.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"

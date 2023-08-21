@@ -42,7 +42,9 @@ class Platform(metaclass=PlatformMeta):
 
     async def load_account(self, account: str) -> None:
         account_auth = await self._account.get(account)
-        self._session = httpx.AsyncClient(**account_auth, base_url=self.api_url)
+        base_url = account_auth.pop("base_url", self.api_url)
+        self.api_url = base_url
+        self._session = httpx.AsyncClient(**account_auth, base_url=base_url)
 
     @abstractmethod
     async def handle_login(

@@ -48,10 +48,7 @@ class Accounts:
 
     async def list(self) -> list[str]:
         return [
-            unquote_plus(file)
-            .replace(self.__platform, "")
-            .replace(".json", "")
-            .removeprefix("-")
+            unquote_plus(file.removeprefix(f"{self.__platform}-").removesuffix(".json"))
             for file in await aiofiles.os.listdir(PATHWAY)
             if file.startswith(self.__platform)
         ]
