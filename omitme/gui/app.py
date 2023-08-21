@@ -1,7 +1,9 @@
 """
 Omit your data
 """
-from typing import Callable, Type
+from re import A
+from turtle import width
+from typing import Callable, Optional, Type
 
 import toga
 from toga.style import Pack
@@ -17,50 +19,87 @@ class Omitme(toga.App):
     def startup(self) -> None:
         self.main_window = toga.MainWindow(title=self.formal_name)
 
-        self.platform_box = toga.Box(style=Pack(direction=COLUMN))
+        self.platform_box = toga.Box(style=Pack(direction=COLUMN, padding=20))
 
         platform_group = toga.Group("Platforms")
 
         class ShowPlatform:
-            def __init__(
-                self, ctx: "Omitme", command: toga.Command, platform: type[Platform]
-            ) -> None:
+            def __init__(self, ctx: "Omitme", platform: type[Platform]) -> None:
                 self._ctx = ctx
                 self._platform = platform
-                self._command = command
+                self._platform_init = platform()
+
+            async def add_account(self, _) -> None:
+                try:
+                    await self._platform_init.handle_login()
+                except LoginError:
+                    self._ctx.remove_platform_children()
+
+                    self._ctx.platform_box.add(
+                        toga.Label(
+                            "Login failed.",
+                            style=Pack(font_size=15),
+                        )
+                    )
+                    return
+
+                await self._ctx.show_platform(self._platform, self._platform_init)
 
             async def handle(self, _) -> None:
-                await self._ctx.show_platform(self._command, self._platform)
+                self._ctx.remove_platform_children()
+
+                accounts = await self._platform_init.list_accounts()
+
+                account_box = toga.Box(style=Pack(direction=COLUMN, width=300))
+
+                account_box.add(
+                    toga.Button("Add new account", on_press=self.add_account)
+                )
+
+                class Account:
+                    def __init__(self, ctx: "ShowPlatform", account: str) -> None:
+                        self._account = account
+                        self._ctx = ctx
+
+                    async def handle(self, _) -> None:
+                        await self._ctx._platform_init.load_account(self._account)
+                        await self._ctx._ctx.show_platform(
+                            self._ctx._platform, self._ctx._platform_init
+                        )
+
+                for account in accounts:
+                    account_box.add(
+                        toga.Button(
+                            account,
+                            on_press=Account(self, account).handle,
+                            style=Pack(padding_top=10),
+                        )
+                    )
+
+                self._ctx.platform_box.add(account_box)
 
         for platform in PLATFORMS:
             command = toga.Command(
-                # Placeholder func
-                lambda _: (),
+                ShowPlatform(self, platform).handle,
                 group=platform_group,
                 text=platform.alias.capitalize(),
                 tooltip=platform.description,
                 icon=f"resources/platforms/{platform.icon}",
             )
-            command.action = ShowPlatform(self, command, platform).handle
 
             self.main_window.toolbar.add(command)
 
         self.main_window.content = self.platform_box
         self.main_window.show()
 
-    async def show_platform(
-        self, command: toga.Command, platform: Type[Platform]
-    ) -> None:
-        command.enabled = False
-
+    def remove_platform_children(self) -> None:
         for child in self.platform_box.children:
             self.platform_box.remove(child)
 
-        init_platform = platform()
-        try:
-            await init_platform.handle_login()
-        except LoginError:
-            return
+    async def show_platform(
+        self, platform_type: Type[Platform], init_platform: Platform
+    ) -> None:
+        self.remove_platform_children()
 
         class Action:
             def __init__(
@@ -77,7 +116,7 @@ class Omitme(toga.App):
                 logs_content = toga.Box(style=Pack(direction=COLUMN))
 
                 logs = toga.ScrollContainer(
-                    style=Pack(padding=20, height=600),
+                    style=Pack(height=800),
                     content=logs_content,
                     horizontal=False,
                     vertical=True,
@@ -104,8 +143,8 @@ class Omitme(toga.App):
 
                     logs_content.insert(0, label)
 
-        actions = toga.Box(style=Pack(padding=20, direction=ROW))
-        for method, meta in platform._target_methods:
+        actions = toga.Box(style=Pack(direction=ROW))
+        for method, meta in platform_type._target_methods:
             action_pretty = meta.action.capitalize()
 
             actions.add(
