@@ -42,8 +42,8 @@ for platform in PLATFORMS:
         @target.command(meta.action.replace(" ", "-"), help=meta.description)
         @click.option(
             "--account",
-            prompt="Your account name",
-            help="Provide the name of the account you want to commit a action on",
+            prompt="The account to use with the target",
+            help="Provide the account you want to commit a action on",
             required=True,
         )
         @click.option(
@@ -52,12 +52,7 @@ for platform in PLATFORMS:
             type=click.BOOL,
             help="Should logs be echo into the terminal in real-time",
         )
-        @click.option(
-            "--log-pathway", default=None, type=click.Path(exists=False, writable=True)
-        )
-        def handle_target(
-            account: str, echo: bool, log_pathway: Optional[str], platform=platform
-        ) -> None:
+        def handle_target(account: str, echo: bool, platform=platform) -> None:
             platform_init = platform()
             loop.run_until_complete(platform_init.load_account(account.strip()))
 

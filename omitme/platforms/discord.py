@@ -44,9 +44,10 @@ class Discord(Platform):
 
         session = httpx.AsyncClient(headers=headers)
 
-        await accounts.add(
-            self._user_id_from_session(session), session={"headers": headers}
-        )
+        # Need to include the API url, because hasn't been injected yet.
+        resp = await session.get(f"{self.api_url}/users/@me")
+
+        await accounts.add(resp.json()["username"], session={"headers": headers})
 
         return session
 

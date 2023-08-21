@@ -37,6 +37,9 @@ class Platform(metaclass=PlatformMeta):
     async def list_accounts(self) -> list[str]:
         return await self._account.list()
 
+    async def remove_account(self, account: str) -> None:
+        await self._account.remove(account)
+
     async def load_account(self, account: str) -> None:
         account_auth = await self._account.get(account)
         self._session = httpx.AsyncClient(**account_auth, base_url=self.api_url)

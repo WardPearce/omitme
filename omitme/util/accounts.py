@@ -1,7 +1,7 @@
 import json
 import platform
 from os import getenv, mkdir, path
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, unquote_plus
 
 import aiofiles
 import aiofiles.os
@@ -48,7 +48,10 @@ class Accounts:
 
     async def list(self) -> list[str]:
         return [
-            file.replace(self.__platform, "").replace(".json", "").removeprefix("-")
+            unquote_plus(file)
+            .replace(self.__platform, "")
+            .replace(".json", "")
+            .removeprefix("-")
             for file in await aiofiles.os.listdir(PATHWAY)
             if file.startswith(self.__platform)
         ]
