@@ -108,6 +108,9 @@ class Discord(Platform):
             if message["author"]["id"] != user_id:
                 continue
 
+            if message["type"] != 0:
+                continue
+
             try:
                 await self._handle_ratelimit(
                     session.delete,
