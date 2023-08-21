@@ -9,15 +9,22 @@ author_email = "wardpearce@pm.me"
 
 [tool.briefcase.app.omitme]
 formal_name = "Omit me"
-description = "Omit your data"
-long_description = """More details about the app should go here.
-"""
+description = "Your Privacy-Centric, Easily Extendable Data Deletion Solution"
+long_description = "Your Privacy-Centric, Easily Extendable Data Deletion Solution"
 icon = "omitme/resources/omitme"
 sources = [
     "omitme",
 ]
 cleanup_paths = [
     "omitme/cli"
+]
+requires = [
+    "selenium>=4.11.2",
+    "selenium-wire>=5.1.0",
+    "pydantic>=2.1.1",
+    "httpx>=0.24.1",
+    "aiofiles>=23.2.1",
+    "setuptools"
 ]
 
 [tool.briefcase.app.omitme.macOS]
