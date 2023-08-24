@@ -1,9 +1,7 @@
 """
 Omit your data
 """
-from re import A
-from turtle import width
-from typing import Callable, Optional, Type
+from typing import Callable, Type
 
 import toga
 from toga.style import Pack
@@ -50,10 +48,12 @@ class Omitme(toga.App):
 
                 accounts = await self._platform_init.list_accounts()
 
-                account_box = toga.Box(style=Pack(direction=COLUMN, width=300))
-
-                account_box.add(
-                    toga.Button("Add new account", on_press=self.add_account)
+                account_box = toga.Box(
+                    style=Pack(direction=COLUMN),
+                    children=[
+                        toga.Button("Add new account", on_press=self.add_account),
+                        toga.Divider(style=Pack(padding_top=10)),
+                    ],
                 )
 
                 class Account:
@@ -67,12 +67,37 @@ class Omitme(toga.App):
                             self._ctx._platform, self._ctx._platform_init
                         )
 
+                    async def remove_handle(self, _) -> None:
+                        await self._ctx._platform_init.remove_account(self._account)
+
+                        for child in account_box.children:
+                            if not isinstance(child, toga.Box):
+                                continue
+
+                            if child.children[0].text == self._account:
+                                account_box.remove(child)
+                                break
+
                 for account in accounts:
                     account_box.add(
-                        toga.Button(
-                            account,
-                            on_press=Account(self, account).handle,
+                        toga.Box(
                             style=Pack(padding_top=10),
+                            children=[
+                                toga.Button(
+                                    account,
+                                    on_press=Account(self, account).handle,
+                                    style=Pack(width=300),
+                                ),
+                                toga.Button(
+                                    "Remove",
+                                    on_press=Account(self, account).remove_handle,
+                                    style=Pack(
+                                        padding_left=5,
+                                        background_color="red",
+                                        width=100,
+                                    ),
+                                ),
+                            ],
                         )
                     )
 

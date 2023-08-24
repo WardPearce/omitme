@@ -25,6 +25,8 @@ requires = [
     "httpx>=0.24.1",
     "aiofiles>=23.2.1",
     "yarl>=1.9.2",
+    "keyring>=24.2.0",
+    "cryptography>=41.0.3",
     "setuptools"
 ]
 
