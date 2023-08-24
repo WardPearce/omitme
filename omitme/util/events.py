@@ -16,3 +16,7 @@ class RateLimitEvent(BaseModel):
 
 class FailEvent(BaseModel):
     content: str
+
+
+class CompletedEvent(BaseModel):
+    pass

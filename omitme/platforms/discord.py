@@ -9,7 +9,7 @@ from seleniumwire.request import HTTPHeaders
 
 from omitme.errors import LoginError
 from omitme.util.accounts import Accounts
-from omitme.util.events import CheckingEvent, FailEvent, OmittedEvent
+from omitme.util.events import CheckingEvent, CompletedEvent, FailEvent, OmittedEvent
 from omitme.util.platform import Platform
 from omitme.util.targets import login, target
 from omitme.util.wait_for import wait_until_or_close
@@ -136,17 +136,18 @@ class Discord(Platform):
     @target(action="messages delete", description="Delete all given messages")
     async def handle_all_message_delete(
         self, session: httpx.AsyncClient
-    ) -> AsyncIterator[OmittedEvent | CheckingEvent | FailEvent]:
-        async with session as client:
-            channels = (await client.get("/users/@me/channels")).json()
+    ) -> AsyncIterator[OmittedEvent | CheckingEvent | FailEvent | CompletedEvent]:
+        channels = (await session.get("/users/@me/channels")).json()
 
-            user_id = self._user_id_from_session(client)
+        user_id = self._user_id_from_session(session)
 
-            for channel in channels:
-                if channel["type"] != 1:
-                    continue
+        for channel in channels:
+            if channel["type"] != 1:
+                continue
 
-                yield CheckingEvent(channel=channel["recipients"][0]["username"])
+            yield CheckingEvent(channel=channel["recipients"][0]["username"])
 
-                async for message in self._delete_messages(channel, user_id, client):
-                    yield message
+            async for message in self._delete_messages(channel, user_id, session):
+                yield message
+
+        yield CompletedEvent()

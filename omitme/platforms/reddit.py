@@ -7,7 +7,7 @@ from seleniumwire.request import HTTPHeaders
 
 from omitme.errors import LoginError
 from omitme.util.accounts import Accounts
-from omitme.util.events import CheckingEvent, FailEvent, OmittedEvent
+from omitme.util.events import CheckingEvent, CompletedEvent, FailEvent, OmittedEvent
 from omitme.util.platform import Platform
 from omitme.util.targets import login, target
 from omitme.util.wait_for import wait_until_or_close
@@ -28,14 +28,20 @@ class Reddit(Platform):
     ) -> httpx.AsyncClient:
         driver.get(self.login_url)
 
-        def get_headers_with_token(current: webdriver.Chrome) -> HTTPHeaders | bool:
+        def get_headers_with_token(current: webdriver.Chrome) -> dict | bool:
             for request in current.requests:
                 if "Authorization" in request.headers:
-                    return request.headers
+                    headers = {}
+                    if request.response:
+                        headers |= request.response.headers
+
+                    headers |= request.headers
+
+                    return headers
             return False
 
         try:
-            headers: dict = dict(wait_until_or_close(driver, get_headers_with_token))
+            headers: dict = wait_until_or_close(driver, get_headers_with_token)
         except TimeoutException:
             raise LoginError()
 
@@ -44,23 +50,28 @@ class Reddit(Platform):
 
         to_save = {
             "headers": headers,
-            "params": {"redditWebClient": "web2x", "app": "web2x-client-production"},
+            "params": {
+                "redditWebClient": "desktop2x",
+                "app": "desktop2x-client-production",
+            },
         }
 
-        session = httpx.AsyncClient(**to_save)  # type: ignore
+        session = httpx.AsyncClient(**to_save, base_url=self.api_url)  # type: ignore
 
-        await accounts.add(await self.get_username(session), to_save)
+        await accounts.add(await self._get_username(session), to_save)
 
         return session
 
-    async def _delete_post(self, session: httpx.AsyncClient, post_id: str) -> None:
-        resp = await session.post(
-            "api/del",
+    async def _delete_post(
+        self, session: httpx.AsyncClient, type_id: str, post_id: str
+    ) -> None:
+        await session.post(
+            "/api/del",
             params={"raw_json": "1", "gilding_detail": "1"},
-            json={"id": post_id},
+            data={"id": f"{type_id}_{post_id}"},
         )
 
-    async def get_username(self, session: httpx.AsyncClient) -> str:
+    async def _get_username(self, session: httpx.AsyncClient) -> str:
         resp = await session.get(
             "https://gateway.reddit.com/desktopapi/v1/prefs",
             params={"include": "identity"},
@@ -71,8 +82,17 @@ class Reddit(Platform):
     @target("posts delete", description="Delete all reddit posts")
     async def handle_delete_posts(
         self, session: httpx.AsyncClient
-    ) -> AsyncIterator[OmittedEvent | CheckingEvent | FailEvent]:
-        resp = await session.get(f"/user/{await self.get_username(session)}/submitted")
-        print(resp.json()["data"]["children"][0]["data"]["id"])
+    ) -> AsyncIterator[OmittedEvent | CheckingEvent | FailEvent | CompletedEvent]:
+        resp = await session.get(
+            f"/user/{await self._get_username(session)}/submitted",
+            params={"timeframe": "all", "limit": "100"},
+        )
 
-        yield CheckingEvent(channel="")
+        for post in resp.json()["data"]["children"]:
+            await self._delete_post(session, post["kind"], post["data"]["id"])
+
+            yield OmittedEvent(
+                channel=post["data"]["subreddit"], content=post["data"]["selftext"]
+            )
+
+        yield CompletedEvent()

@@ -9,7 +9,7 @@ from toga.style.pack import COLUMN, ROW
 
 from omitme.errors import LoginError
 from omitme.platforms import PLATFORMS
-from omitme.util.events import CheckingEvent, FailEvent, OmittedEvent
+from omitme.util.events import CheckingEvent, CompletedEvent, FailEvent, OmittedEvent
 from omitme.util.platform import Platform
 
 
@@ -150,14 +150,18 @@ class Omitme(toga.App):
                 self._ctx.platform_box.add(logs)
 
                 async for event in getattr(self._platform, self._method.__name__)():
-                    event: OmittedEvent | CheckingEvent | FailEvent = event
+                    event: OmittedEvent | CheckingEvent | FailEvent | CompletedEvent = (
+                        event
+                    )
 
                     if isinstance(event, OmittedEvent):
                         label = toga.Label(
-                            f'Deleted "{event.content}"',
+                            f'Deleted "{event.content}" from {event.channel}',
                         )
                     elif isinstance(event, FailEvent):
                         continue
+                    elif isinstance(event, CompletedEvent):
+                        label = toga.Label("Task completed")
                     else:
                         label = toga.Label(
                             f"Checking {event.channel}",
