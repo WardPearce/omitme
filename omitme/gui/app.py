@@ -161,11 +161,14 @@ class Omitme(toga.App):
                     elif isinstance(event, FailEvent):
                         continue
                     elif isinstance(event, CompletedEvent):
-                        label = toga.Label("Task completed")
+                        label = toga.Label(
+                            "Task completed",
+                            style=Pack(font_weight="bold", font_size=13),
+                        )
                     else:
                         label = toga.Label(
                             f"Checking {event.channel}",
-                            style=Pack(font_weight="bold", font_size=13),
+                            style=Pack(font_weight="bold", font_size=11),
                         )
 
                     label.style = Pack(padding_top=5)
