@@ -33,6 +33,16 @@ for platform in PLATFORMS:
         for account in accounts:
             click.echo(f"- {account}")
 
+    @platform_group.command("logout", help="Logout the given account")
+    @click.option(
+        "--account",
+        prompt="The account you wish the remove",
+        help="Provide the account ID you want to remove",
+        required=True,
+    )
+    def logout(account: str, platform=platform) -> None:
+        loop.run_until_complete(platform().remove_account(account))
+
     @platform_group.group("target", help="Run specific target on the selected platform")
     def target() -> None:
         pass
