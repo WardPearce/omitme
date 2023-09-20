@@ -4,6 +4,7 @@ from typing import Optional
 import click
 
 from omitme.platforms import PLATFORMS
+from omitme.util.targets import SelectionInput
 
 
 @click.group()
@@ -24,7 +25,7 @@ for platform in PLATFORMS:
 
     @platform_group.command("login", help="Log into a new account")
     def login(platform=platform) -> None:
-        loop.run_until_complete(platform().handle_login())
+        loop.run_until_complete(platform().handle_login())  # type: ignore
 
     @platform_group.command("accounts", help="List accounts already logged in")
     def accounts(platform=platform) -> None:
@@ -62,13 +63,41 @@ for platform in PLATFORMS:
             type=click.BOOL,
             help="Should logs be echo into the terminal in real-time",
         )
-        def handle_target(account: str, echo: bool, platform=platform) -> None:
+        def handle_target(
+            account: str, echo: bool, platform=platform, meta=meta, method=method
+        ) -> None:
             platform_init = platform()
             loop.run_until_complete(platform_init.load_account(account.strip()))
 
-            async def handle_events() -> None:
-                async for event in getattr(platform_init, method.__name__)():
+            parameters = {}
+
+            if meta.inputs:
+                for input_ in meta.inputs:
+                    if isinstance(input_, SelectionInput):
+                        selections = loop.run_until_complete(
+                            input_.run(platform_init, platform_init._session)
+                        )
+
+                        selection_choices = []
+                        indexed_selection = {}
+                        for selection in selections:
+                            display_format = f"{input_.format}".format_map(selection)
+
+                            selection_choices.append(display_format)
+                            indexed_selection[display_format] = selection
+
+                        selected = click.prompt(
+                            f"Select {input_.name}",
+                            type=click.Choice(selection_choices),
+                        )
+
+                        parameters[input_.parameter] = [indexed_selection[selected]]
+
+            async def handle_events(platform_init, method, parameters) -> None:
+                async for event in getattr(platform_init, method.__name__)(
+                    **parameters
+                ):
                     if echo:
                         click.echo(event)
 
-            loop.run_until_complete(handle_events())
+            loop.run_until_complete(handle_events(platform_init, method, parameters))

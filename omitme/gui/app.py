@@ -29,7 +29,7 @@ class Omitme(toga.App):
 
             async def add_account(self, _) -> None:
                 try:
-                    await self._platform_init.handle_login()
+                    await self._platform_init.handle_login()  # type: ignore
                 except LoginError:
                     self._ctx.remove_platform_children()
 

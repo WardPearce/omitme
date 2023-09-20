@@ -24,6 +24,8 @@ class Platform(metaclass=PlatformMeta):
     description: str
     icon: str
 
+    _session: httpx.AsyncClient
+
     def __init__(
         self,
         user_agent: str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
@@ -31,7 +33,6 @@ class Platform(metaclass=PlatformMeta):
         self.user_agent = user_agent
         self.webdriver_options = webdriver.ChromeOptions()
         self.webdriver_options.add_argument(f"user-agent={user_agent}")
-        self._session: httpx.AsyncClient | None = None
         self._account = Accounts(self.alias)
 
     async def list_accounts(self) -> list[str]:

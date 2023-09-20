@@ -1,6 +1,6 @@
 import asyncio
 import base64
-from typing import AsyncIterator, Callable
+from typing import AsyncIterator, Callable, List
 
 import httpx
 from selenium.common.exceptions import TimeoutException
@@ -11,7 +11,7 @@ from omitme.errors import LoginError
 from omitme.util.accounts import Accounts
 from omitme.util.events import CheckingEvent, CompletedEvent, FailEvent, OmittedEvent
 from omitme.util.platform import Platform
-from omitme.util.targets import login, target
+from omitme.util.targets import SelectionInput, login, target
 from omitme.util.wait_for import wait_until_or_close
 
 
@@ -133,11 +133,34 @@ class Discord(Platform):
             ):
                 yield message
 
-    @target(action="messages delete", description="Delete all given messages")
-    async def handle_all_message_delete(
-        self, session: httpx.AsyncClient
+    async def _get_channels(self, session: httpx.AsyncClient) -> List[dict]:
+        return (await session.get("/users/@me/channels")).json()
+
+    @target(
+        action="messages delete selected",
+        description="Delete selected messages",
+        inputs=[
+            SelectionInput(
+                name="channels",
+                parameter="channels",
+                required=True,
+                run=_get_channels,
+                format="{recipients[0][global_name]}",
+            )
+        ],
+    )
+    async def handle_delete_selected_messages(
+        self, session: httpx.AsyncClient, channels: List[dict]
     ) -> AsyncIterator[OmittedEvent | CheckingEvent | FailEvent | CompletedEvent]:
-        channels = (await session.get("/users/@me/channels")).json()
+        async for event in self.handle_all_message_delete(session, channels=channels):
+            yield event
+
+    @target(action="messages delete", description="Delete all messages")
+    async def handle_all_message_delete(
+        self, session: httpx.AsyncClient, channels: List[dict] | None = None
+    ) -> AsyncIterator[OmittedEvent | CheckingEvent | FailEvent | CompletedEvent]:
+        if not channels:
+            channels = await self._get_channels(session)
 
         user_id = self._user_id_from_session(session)
 

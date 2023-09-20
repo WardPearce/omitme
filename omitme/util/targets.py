@@ -1,20 +1,28 @@
 from functools import wraps
-from typing import TYPE_CHECKING, Any, AsyncIterator, Callable, cast
+from typing import TYPE_CHECKING, Any, AsyncIterator, Callable, Coroutine, List, cast
 
 import httpx
 from pydantic import BaseModel
 from seleniumwire import webdriver
 
 from omitme.errors import LoginRequiredError
-from omitme.util.accounts import Accounts
 
 if TYPE_CHECKING:
     from omitme.util.platform import Platform
 
 
+class SelectionInput(BaseModel):
+    parameter: str
+    run: Callable[[Any, httpx.AsyncClient], Coroutine[Any, Any, Any]]
+    required: bool = False
+    format: str
+    name: str
+
+
 class Target(BaseModel):
     description: str | None = None
     action: str
+    inputs: List[SelectionInput] | None = None
 
 
 async def raise_on_4xx_5xx(response: httpx.Response):
@@ -43,11 +51,14 @@ def login(func: Callable) -> Callable:
     return _implement
 
 
-def target(action: str, description: str | None = None) -> Callable:
+def target(
+    action: str,
+    description: str | None = None,
+    inputs: List[SelectionInput] | None = None,
+) -> Callable:
     def _func(func: Callable) -> Callable:
         func._target_data = Target(
-            description=description,
-            action=action,
+            description=description, action=action, inputs=inputs
         )
 
         @wraps(func)
@@ -57,7 +68,7 @@ def target(action: str, description: str | None = None) -> Callable:
             if not self_._session:
                 raise LoginRequiredError()
 
-            async for result in func(self_, session=self_._session):
+            async for result in func(self_, session=self_._session, **kwargs):
                 yield result
 
         return _implement
