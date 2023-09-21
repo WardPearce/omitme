@@ -86,12 +86,24 @@ for platform in PLATFORMS:
                             selection_choices.append(display_format)
                             indexed_selection[display_format] = selection
 
-                        selected = click.prompt(
-                            f"Select {input_.name}",
-                            type=click.Choice(selection_choices),
+                        click.echo(", ".join(selection_choices))
+
+                        chosen = click.prompt(
+                            f"Select {input_.name} (comma separated)",
                         )
 
-                        parameters[input_.parameter] = [indexed_selection[selected]]
+                        parameters[input_.parameter] = []
+                        for selected in chosen.split(","):
+                            selected = selected.strip()
+
+                            if selected not in indexed_selection:
+                                raise Exception(
+                                    f"{selected} not found in {input_.name}"
+                                )
+
+                            parameters[input_.parameter].append(
+                                indexed_selection[selected]
+                            )
 
             async def handle_events(platform_init, method, parameters) -> None:
                 async for event in getattr(platform_init, method.__name__)(
