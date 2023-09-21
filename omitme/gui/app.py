@@ -46,6 +46,11 @@ class Omitme(toga.App):
             async def handle(self, _) -> None:
                 self._ctx.remove_platform_children()
 
+                for command in self._ctx.top_bar_commands.values():
+                    command.enabled = True
+
+                self._ctx.top_bar_commands[self._platform.alias].enabled = False
+
                 accounts = await self._platform_init.list_accounts()
 
                 account_box = toga.Box(
@@ -103,6 +108,8 @@ class Omitme(toga.App):
 
                 self._ctx.platform_box.add(account_box)
 
+        self.top_bar_commands: dict[str, toga.Command] = {}
+
         for platform in PLATFORMS:
             command = toga.Command(
                 ShowPlatform(self, platform).handle,
@@ -111,6 +118,8 @@ class Omitme(toga.App):
                 tooltip=platform.description,
                 icon=f"resources/platforms/{platform.icon}",
             )
+
+            self.top_bar_commands[platform.alias] = command
 
             self.main_window.toolbar.add(command)
 
