@@ -48,8 +48,7 @@ class Omitme(toga.App):
             async def handle(self, _) -> None:
                 self._ctx.remove_platform_children()
 
-                for command in self._ctx.top_bar_commands.values():
-                    command.enabled = True
+                self._ctx.enable_all_toolbar()
 
                 self._ctx.top_bar_commands[self._platform.alias].enabled = False
 
@@ -132,6 +131,10 @@ class Omitme(toga.App):
         for child in self.platform_box.children:
             self.platform_box.remove(child)
 
+    def enable_all_toolbar(self) -> None:
+        for command in self.top_bar_commands.values():
+            command.enabled = True
+
     async def show_platform(
         self, platform_type: Type[Platform], init_platform: Platform
     ) -> None:
@@ -195,9 +198,7 @@ class Omitme(toga.App):
                     cancel_omit = True
                     self._ctx.remove_platform_children()
                     self._ctx.platform_box.remove(cancel_button)
-
-                    for command in self._ctx.top_bar_commands.values():
-                        command.enabled = True
+                    self._ctx.enable_all_toolbar()
 
                 self._ctx.platform_box.add(cancel_button)
 
