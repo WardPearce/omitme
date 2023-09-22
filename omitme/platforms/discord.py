@@ -155,7 +155,7 @@ class Discord(Platform):
         async for event in self.handle_all_message_delete(session, channels=channels):
             yield event
 
-    @target(action="messages delete", description="Delete all messages")
+    @target(action="messages delete all", description="Delete all messages")
     async def handle_all_message_delete(
         self, session: httpx.AsyncClient, channels: List[dict] | None = None
     ) -> AsyncIterator[OmittedEvent | CheckingEvent | FailEvent | CompletedEvent]:

@@ -79,7 +79,7 @@ class Reddit(Platform):
 
         return resp.json()["account"]["displayText"]
 
-    @target("posts delete", description="Delete all reddit posts")
+    @target("posts delete all", description="Delete all reddit posts")
     async def handle_delete_posts(
         self, session: httpx.AsyncClient
     ) -> AsyncIterator[OmittedEvent | CheckingEvent | FailEvent | CompletedEvent]:

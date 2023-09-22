@@ -1,6 +1,7 @@
 """
 Omit your data
 """
+import asyncio
 from typing import Callable, Type
 
 import toga
@@ -11,6 +12,7 @@ from omitme.errors import LoginError
 from omitme.platforms import PLATFORMS
 from omitme.util.events import CheckingEvent, CompletedEvent, FailEvent, OmittedEvent
 from omitme.util.platform import Platform
+from omitme.util.targets import SelectionInput, Target
 
 
 class Omitme(toga.App):
@@ -137,26 +139,67 @@ class Omitme(toga.App):
 
         class Action:
             def __init__(
-                self, ctx: "Omitme", platform: Platform, action: str, method: Callable
+                self,
+                ctx: "Omitme",
+                platform: Platform,
+                action: str,
+                method: Callable,
+                meta: Target,
             ) -> None:
                 self._ctx = ctx
                 self._platform = platform
                 self._action = action
                 self._method = method
+                self._meta = meta
 
             async def handle(self, _) -> None:
                 self._ctx.platform_box.remove(actions)
 
-                logs_content = toga.Box(style=Pack(direction=COLUMN))
+                scroll_content = toga.Box(style=Pack(direction=COLUMN))
 
-                logs = toga.ScrollContainer(
+                scrollable = toga.ScrollContainer(
                     style=Pack(height=800),
-                    content=logs_content,
+                    content=scroll_content,
                     horizontal=False,
                     vertical=True,
                 )
 
-                self._ctx.platform_box.add(logs)
+                self._ctx.platform_box.add(scrollable)
+
+                # if self._meta.inputs:
+                #     for input_ in self._meta.inputs:
+                #         if isinstance(input_, SelectionInput):
+                #             selections = await input_.run(
+                #                 self._platform, self._platform._session
+                #             )
+
+                #             for selection in selections:
+                #                 display_format = f"{input_.format}".format_map(
+                #                     selection
+                #                 )
+
+                #                 scroll_content.add(
+                #                     toga.Switch(
+                #                         display_format,
+                #                     )
+                #                 )
+
+                #     self._ctx.platform_box.add(toga.Button("Continue"))
+
+                cancel_omit = False
+                cancel_button = toga.Button(
+                    "Cancel", on_press=lambda _: on_cancel(cancel_omit)
+                )
+
+                def on_cancel(cancel_omit: bool) -> None:
+                    cancel_omit = True
+                    self._ctx.remove_platform_children()
+                    self._ctx.platform_box.remove(cancel_button)
+
+                    for command in self._ctx.top_bar_commands.values():
+                        command.enabled = True
+
+                self._ctx.platform_box.add(cancel_button)
 
                 async for event in getattr(self._platform, self._method.__name__)():
                     event: OmittedEvent | CheckingEvent | FailEvent | CompletedEvent = (
@@ -182,7 +225,10 @@ class Omitme(toga.App):
 
                     label.style = Pack(padding_top=5)
 
-                    logs_content.insert(0, label)
+                    scroll_content.insert(0, label)
+
+                    if cancel_omit:
+                        break
 
         actions = toga.Box(style=Pack(direction=ROW))
         for method, meta in platform_type._target_methods:
@@ -191,7 +237,9 @@ class Omitme(toga.App):
             actions.add(
                 toga.Button(
                     action_pretty,
-                    on_press=Action(self, init_platform, action_pretty, method).handle,
+                    on_press=Action(
+                        self, init_platform, action_pretty, method, meta
+                    ).handle,
                     style=Pack(padding_left=10),
                 )
             )
