@@ -1,0 +1,28 @@
+name: Production workflow
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  base-production:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' 
+      - name: Install Poetry
+        run: curl -sSL https://install.python-poetry.org | python3 -
+      - name: Install dependencies
+        run: |
+          poetry install
+      - name: Pack to pypi
+        env:
+          PYPI_USER: ${{ secrets.PYPI_USER }}
+          PYPI_PASS: ${{ secrets.PYPI_PASS }}
+        run: |
+          poetry build
+          poetry publish --username $PYPI_USER --password $PYPI_PASS
