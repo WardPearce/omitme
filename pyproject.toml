@@ -156,8 +156,8 @@ style_framework = "Shoelace v2.3"
 
 [tool.poetry]
 name = "omitme"
-version = "0.0.1"
-description = ""
+version = "0.0.2"
+description = "OmitMe - Your Privacy-Centric, Easily Extendable Data Deletion Solution"
 authors = ["WardPearce <wardpearce@pm.me>"]
 license = "GNU General Public License v3 (GPLv3)"
 readme = "README.md"
