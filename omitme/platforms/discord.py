@@ -134,7 +134,17 @@ class Discord(Platform):
                 yield message
 
     async def _get_channels(self, session: httpx.AsyncClient) -> List[dict]:
-        return (await session.get("/users/@me/channels")).json()
+        channels = (await session.get("/users/@me/channels")).json()
+
+        result = []
+
+        for channel in channels:
+            if channel["type"] != 1:
+                continue
+
+            result.append(channel)
+
+        return result
 
     @target(
         action="messages delete selected",
@@ -145,7 +155,7 @@ class Discord(Platform):
                 parameter="channels",
                 required=True,
                 run=_get_channels,
-                format="{recipients[0][global_name]}",
+                format="{recipients[0][username]}",
             )
         ],
     )
@@ -165,9 +175,6 @@ class Discord(Platform):
         user_id = self._user_id_from_session(session)
 
         for channel in channels:
-            if channel["type"] != 1:
-                continue
-
             yield CheckingEvent(channel=channel["recipients"][0]["username"])
 
             async for message in self._delete_messages(channel, user_id, session):

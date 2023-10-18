@@ -1,7 +1,7 @@
 [tool.briefcase]
 project_name = "Omit me"
 bundle = "com.wardpearce.omitme"
-version = "0.0.2"
+version = "0.0.1"
 url = "https://github.com/WardPearce/omitme"
 license = "GNU General Public License v3 (GPLv3)"
 author = "WardPearce"
@@ -156,7 +156,7 @@ style_framework = "Shoelace v2.3"
 
 [tool.poetry]
 name = "omitme"
-version = "0.0.2"
+version = "0.0.3"
 description = "OmitMe - Your Privacy-Centric, Easily Extendable Data Deletion Solution"
 authors = ["WardPearce <wardpearce@pm.me>"]
 license = "GNU General Public License v3 (GPLv3)"
