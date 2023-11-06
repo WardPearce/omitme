@@ -607,6 +607,71 @@ files = [
 test = ["pytest (>=6)"]
 
 [[package]]
+name = "fonttools"
+version = "4.44.0"
+description = "Tools to manipulate font files"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "fonttools-4.44.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:e1cd1c6bb097e774d68402499ff66185190baaa2629ae2f18515a2c50b93db0c"},
+    {file = "fonttools-4.44.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:b9eab7f9837fdaa2a10a524fbcc2ec24bf60637c044b6e4a59c3f835b90f0fae"},
+    {file = "fonttools-4.44.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0f412954275e594f7a51c16f3b3edd850acb0d842fefc33856b63a17e18499a5"},
+    {file = "fonttools-4.44.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:50d25893885e80a5955186791eed5579f1e75921751539cc1dc3ffd1160b48cf"},
+    {file = "fonttools-4.44.0-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:22ea8aa7b3712450b42b044702bd3a64fd118006bad09a6f94bd1b227088492e"},
+    {file = "fonttools-4.44.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:df40daa6c03b98652ffe8110ae014fe695437f6e1cb5a07e16ea37f40e73ac86"},
+    {file = "fonttools-4.44.0-cp310-cp310-win32.whl", hash = "sha256:bca49da868e8bde569ef36f0cc1b6de21d56bf9c3be185c503b629c19a185287"},
+    {file = "fonttools-4.44.0-cp310-cp310-win_amd64.whl", hash = "sha256:dbac86d83d96099890e731cc2af97976ff2c98f4ba432fccde657c5653a32f1c"},
+    {file = "fonttools-4.44.0-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:e8ff7d19a6804bfd561cfcec9b4200dd1788e28f7de4be70189801530c47c1b3"},
+    {file = "fonttools-4.44.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:a8a1fa9a718de0bc026979c93e1e9b55c5efde60d76f91561fd713387573817d"},
+    {file = "fonttools-4.44.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c05064f95aacdfc06f21e55096c964b2228d942b8675fa26995a2551f6329d2d"},
+    {file = "fonttools-4.44.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:31b38528f25bc662401e6ffae14b3eb7f1e820892fd80369a37155e3b636a2f4"},
+    {file = "fonttools-4.44.0-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:05d7c4d2c95b9490e669f3cb83918799bf1c838619ac6d3bad9ea017cfc63f2e"},
+    {file = "fonttools-4.44.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:6999e80a125b0cd8e068d0210b63323f17338038c2ecd2e11b9209ec430fe7f2"},
+    {file = "fonttools-4.44.0-cp311-cp311-win32.whl", hash = "sha256:a7aec7f5d14dfcd71fb3ebc299b3f000c21fdc4043079101777ed2042ba5b7c5"},
+    {file = "fonttools-4.44.0-cp311-cp311-win_amd64.whl", hash = "sha256:518a945dbfe337744bfff31423c1430303b8813c5275dffb0f2577f0734a1189"},
+    {file = "fonttools-4.44.0-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:59b6ad83cce067d10f4790c037a5904424f45bebb5e7be2eb2db90402f288267"},
+    {file = "fonttools-4.44.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:c2de1fb18198acd400c45ffe2aef5420c8d55fde903e91cba705596099550f3b"},
+    {file = "fonttools-4.44.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:84f308b7a8d28208d54315d11d35f9888d6d607673dd4d42d60b463682ee0400"},
+    {file = "fonttools-4.44.0-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:66bc6efd829382f7a7e6cf33c2fb32b13edc8a239eb15f32acbf197dce7a0165"},
+    {file = "fonttools-4.44.0-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:a8b99713d3a0d0e876b6aecfaada5e7dc9fe979fcd90ef9fa0ba1d9b9aed03f2"},
+    {file = "fonttools-4.44.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:b63da598d9cbc52e2381f922da0e94d60c0429f92207bd3fb04d112fc82ea7cb"},
+    {file = "fonttools-4.44.0-cp312-cp312-win32.whl", hash = "sha256:f611c97678604e302b725f71626edea113a5745a7fb557c958b39edb6add87d5"},
+    {file = "fonttools-4.44.0-cp312-cp312-win_amd64.whl", hash = "sha256:58af428746fa73a2edcbf26aff33ac4ef3c11c8d75bb200eaea2f7e888d2de4e"},
+    {file = "fonttools-4.44.0-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:9ee8692e23028564c13d924004495f284df8ac016a19f17a87251210e1f1f928"},
+    {file = "fonttools-4.44.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:dab3d00d27b1a79ae4d4a240e8ceea8af0ff049fd45f05adb4f860d93744110d"},
+    {file = "fonttools-4.44.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f53526668beccdb3409c6055a4ffe50987a7f05af6436fa55d61f5e7bd450219"},
+    {file = "fonttools-4.44.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a3da036b016c975c2d8c69005bdc4d5d16266f948a7fab950244e0f58301996a"},
+    {file = "fonttools-4.44.0-cp38-cp38-musllinux_1_1_aarch64.whl", hash = "sha256:b99fe8ef4093f672d00841569d2d05691e50334d79f4d9c15c1265d76d5580d2"},
+    {file = "fonttools-4.44.0-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:6d16d9634ff1e5cea2cf4a8cbda9026f766e4b5f30b48f8180f0e99133d3abfc"},
+    {file = "fonttools-4.44.0-cp38-cp38-win32.whl", hash = "sha256:3d29509f6e05e8d725db59c2d8c076223d793e4e35773040be6632a0349f2f97"},
+    {file = "fonttools-4.44.0-cp38-cp38-win_amd64.whl", hash = "sha256:d4fa4f4bc8fd86579b8cdbe5e948f35d82c0eda0091c399d009b2a5a6b61c040"},
+    {file = "fonttools-4.44.0-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:c794de4086f06ae609b71ac944ec7deb09f34ecf73316fddc041087dd24bba39"},
+    {file = "fonttools-4.44.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:2db63941fee3122e31a21dd0f5b2138ce9906b661a85b63622421d3654a74ae2"},
+    {file = "fonttools-4.44.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:eb01c49c8aa035d5346f46630209923d4927ed15c2493db38d31da9f811eb70d"},
+    {file = "fonttools-4.44.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:46c79af80a835410874683b5779b6c1ec1d5a285e11c45b5193e79dd691eb111"},
+    {file = "fonttools-4.44.0-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:b6e6aa2d066f8dafd06d8d0799b4944b5d5a1f015dd52ac01bdf2895ebe169a0"},
+    {file = "fonttools-4.44.0-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:63a3112f753baef8c6ac2f5f574bb9ac8001b86c8c0c0380039db47a7f512d20"},
+    {file = "fonttools-4.44.0-cp39-cp39-win32.whl", hash = "sha256:54efed22b2799a85475e6840e907c402ba49892c614565dc770aa97a53621b2b"},
+    {file = "fonttools-4.44.0-cp39-cp39-win_amd64.whl", hash = "sha256:2e91e19b583961979e2e5a701269d3cfc07418963bee717f8160b0a24332826b"},
+    {file = "fonttools-4.44.0-py3-none-any.whl", hash = "sha256:b9beb0fa6ff3ea808ad4a6962d68ac0f140ddab080957b20d9e268e4d67fb335"},
+    {file = "fonttools-4.44.0.tar.gz", hash = "sha256:4e90dd81b6e0d97ebfe52c0d12a17a9ef7f305d6bfbb93081265057d6092f252"},
+]
+
+[package.extras]
+all = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "fs (>=2.2.0,<3)", "lxml (>=4.0,<5)", "lz4 (>=1.7.4.2)", "matplotlib", "munkres", "scipy", "skia-pathops (>=0.5.0)", "sympy", "uharfbuzz (>=0.23.0)", "unicodedata2 (>=15.1.0)", "xattr", "zopfli (>=0.1.4)"]
+graphite = ["lz4 (>=1.7.4.2)"]
+interpolatable = ["munkres", "scipy"]
+lxml = ["lxml (>=4.0,<5)"]
+pathops = ["skia-pathops (>=0.5.0)"]
+plot = ["matplotlib"]
+repacker = ["uharfbuzz (>=0.23.0)"]
+symfont = ["sympy"]
+type1 = ["xattr"]
+ufo = ["fs (>=2.2.0,<3)"]
+unicode = ["unicodedata2 (>=15.1.0)"]
+woff = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "zopfli (>=0.1.4)"]
+
+[[package]]
 name = "gbulb"
 version = "0.6.4"
 description = "GLib event loop for tulip (PEP 3156)"
@@ -1384,12 +1449,12 @@ plugins = ["importlib-metadata"]
 
 [[package]]
 name = "pygobject"
-version = "3.44.1"
+version = "3.46.0"
 description = "Python bindings for GObject Introspection"
 optional = false
-python-versions = ">=3.7, <4"
+python-versions = ">=3.8, <4"
 files = [
-    {file = "PyGObject-3.44.1.tar.gz", hash = "sha256:665fbe980c91e8b31ad78ed3f66879946948200864002d193f67eccc1d7d5d83"},
+    {file = "PyGObject-3.46.0.tar.gz", hash = "sha256:481437b05af0a66b7c366ea052710eb3aacbb979d22d30b797f7ec29347ab1e6"},
 ]
 
 [package.dependencies]
@@ -1631,18 +1696,18 @@ jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
 name = "rubicon-objc"
-version = "0.4.6"
+version = "0.4.7"
 description = "A bridge between an Objective C runtime environment and Python."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "rubicon-objc-0.4.6.tar.gz", hash = "sha256:faa6e373deab93ba70881354b884137b80403ce78fca2380f189cb338b350926"},
-    {file = "rubicon_objc-0.4.6-py3-none-any.whl", hash = "sha256:d4ec8892771bf7ac9569c1310c3beb80bb516c3df0323e6ffd63442b246dfddd"},
+    {file = "rubicon-objc-0.4.7.tar.gz", hash = "sha256:be937d864bd1229f860defabb89b40c53634eedc36448d89ad3c14eb3286e509"},
+    {file = "rubicon_objc-0.4.7-py3-none-any.whl", hash = "sha256:f37108e35d5da1a78ab3eed2d03b095934f5f618329a939e4bd2ada9894eff6e"},
 ]
 
 [package.extras]
-dev = ["pre-commit (==2.21.0)", "pre-commit (==3.2.2)", "pytest (==7.3.0)", "pytest-tldr (==0.2.5)", "setuptools-scm[toml] (==7.1.0)", "tox (==4.4.11)"]
-docs = ["furo (==2023.3.27)", "pyenchant (==3.2.2)", "sphinx (==6.1.3)", "sphinx-autobuild (==2021.3.14)", "sphinx-tabs (==3.4.1)", "sphinxcontrib-spelling (==8.0.0)"]
+dev = ["pre-commit (==3.5.0)", "pytest (==7.4.2)", "pytest-tldr (==0.2.5)", "setuptools-scm[toml] (==8.0.4)", "tox (==4.11.3)"]
+docs = ["furo (==2023.9.10)", "pyenchant (==3.2.2)", "sphinx (==7.1.2)", "sphinx (==7.2.6)", "sphinx-autobuild (==2021.3.14)", "sphinx-copybutton (==0.5.2)", "sphinx-tabs (==3.4.1)", "sphinxcontrib-spelling (==8.0.0)"]
 
 [[package]]
 name = "secretstorage"
@@ -1793,84 +1858,85 @@ files = [
 
 [[package]]
 name = "toga"
-version = "0.3.1"
+version = "0.4.0"
 description = "A Python native, OS native GUI toolkit."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "toga-0.3.1-py3-none-any.whl", hash = "sha256:a909bee2269ed416fcc77052401bf7ae1dd7fe57313a5c5d1288ab4b2f476841"},
-    {file = "toga-0.3.1.tar.gz", hash = "sha256:026a9074d038d3a61e67f7217b5eb2d423effccb88892099922b7e0e88af6e8f"},
+    {file = "toga-0.4.0-py3-none-any.whl", hash = "sha256:cd2e47bb19ad7dfe0447f1379d4a7e8d9849a25ab8db62d41358185dcb4e4636"},
+    {file = "toga-0.4.0.tar.gz", hash = "sha256:5ced4a0c85399a52e7c2397e7326f787a04da748bc1e9fc37037bde8e1cf4d54"},
 ]
 
 [package.dependencies]
-toga-cocoa = {version = "0.3.1", markers = "sys_platform == \"darwin\""}
-toga-gtk = {version = "0.3.1", markers = "sys_platform == \"freebsd\" or sys_platform == \"linux\""}
-toga-winforms = {version = "0.3.1", markers = "sys_platform == \"win32\""}
+toga-cocoa = {version = "0.4.0", markers = "sys_platform == \"darwin\""}
+toga-gtk = {version = "0.4.0", markers = "sys_platform == \"freebsd\" or sys_platform == \"linux\""}
+toga-winforms = {version = "0.4.0", markers = "sys_platform == \"win32\""}
 
 [[package]]
 name = "toga-cocoa"
-version = "0.3.1"
+version = "0.4.0"
 description = "A Cocoa (macOS) backend for the Toga widget toolkit."
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "toga-cocoa-0.3.1.tar.gz", hash = "sha256:bdf0d0d043e200ba71d3d051ece841a4f8d2fb269b787b35deec47e6a5739fce"},
-    {file = "toga_cocoa-0.3.1-py3-none-any.whl", hash = "sha256:7fff841578cdf82b1c4919e1cb0ae742121055ed585a14d3e51ad11484836064"},
+    {file = "toga-cocoa-0.4.0.tar.gz", hash = "sha256:24ab7e354321606d5ff9fff9941ed986d72a382e71446cda9e88783cf2b97f98"},
+    {file = "toga_cocoa-0.4.0-py3-none-any.whl", hash = "sha256:1100652687935a35c1c03907291b0afac36c5fc86e482a092cb45adfeea43b89"},
 ]
 
 [package.dependencies]
-rubicon-objc = ">=0.4.5rc1,<0.5.0"
-toga-core = "0.3.1"
+fonttools = ">=4.42.1,<5.0.0"
+rubicon-objc = ">=0.4.7,<0.5.0"
+toga-core = "0.4.0"
 
 [[package]]
 name = "toga-core"
-version = "0.3.1"
+version = "0.4.0"
 description = "A Python native, OS native GUI toolkit."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "toga-core-0.3.1.tar.gz", hash = "sha256:3cf5f3448e244a4e14d689130240d939034acf2d359538a9216bfc148a434efa"},
-    {file = "toga_core-0.3.1-py3-none-any.whl", hash = "sha256:42e118c4710b7fdbfdbc9cda3436c552d4ad2996352ea2e0f8bb7d19c513e3a1"},
+    {file = "toga-core-0.4.0.tar.gz", hash = "sha256:355a18dbb5be976ad4247d38b98b0c7f2a88fd17f917b8ad9d55f6c176d298d4"},
+    {file = "toga_core-0.4.0-py3-none-any.whl", hash = "sha256:1600a34ead43e0c18561f63f913ded81e8a67e49b83ac6496f8af31e1a48fb31"},
 ]
 
 [package.dependencies]
-travertino = ">=0.1.3"
+travertino = ">=0.3.0"
 
 [package.extras]
-dev = ["coverage[toml] (==7.0.5)", "pre-commit (==2.21.0)", "pre-commit (==3.0.2)", "pytest (==7.2.1)", "pytest-tldr (==0.2.5)", "setuptools-scm[toml] (==7.0.5)", "tox (==4.3.5)"]
-docs = ["furo (==2022.12.7)", "pyenchant (==3.2.2)", "sphinx (==6.1.3)", "sphinx-autobuild (==2021.3.14)", "sphinx-autodoc-typehints (==1.22)", "sphinx-csv-filter (==0.4.0)", "sphinx-tabs (==3.4.1)", "sphinxcontrib-spelling (==7.7.0)"]
+dev = ["coverage[toml] (==7.0.5)", "pre-commit (==3.0.2)", "pytest (==7.3.1)", "pytest-asyncio (==0.21.0)", "pytest-freezer (==0.4.8)", "setuptools-scm[toml] (==7.0.5)", "tox (==4.3.5)"]
+docs = ["furo (==2022.12.7)", "pyenchant (==3.2.2)", "sphinx (==6.1.3)", "sphinx-autobuild (==2021.3.14)", "sphinx-autodoc-typehints (==1.22)", "sphinx-copybutton (==0.5.2)", "sphinx-csv-filter (==0.4.1)", "sphinx-tabs (==3.4.1)", "sphinx-toolbox (==3.4.0)", "sphinxcontrib-spelling (==7.7.0)"]
 
 [[package]]
 name = "toga-gtk"
-version = "0.3.1"
+version = "0.4.0"
 description = "A GTK backend for the Toga widget toolkit."
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "toga-gtk-0.3.1.tar.gz", hash = "sha256:89d29cbf5fdb64bd82a0904052e4fef14b91428b34792033c1f85259ad5eb50e"},
-    {file = "toga_gtk-0.3.1-py3-none-any.whl", hash = "sha256:e06d945125da098968b57f10e8c56135f41aa2f8810d36052e0dc596c84c222f"},
+    {file = "toga-gtk-0.4.0.tar.gz", hash = "sha256:4150917ff26a50a6629dbab3afd7378d2743ab86cf77b455d3a9dcc85344c764"},
+    {file = "toga_gtk-0.4.0-py3-none-any.whl", hash = "sha256:12240d333472febd7d67d1f27cf0045d5f46e3dd2c77939895a0c96efc07a119"},
 ]
 
 [package.dependencies]
 gbulb = ">=0.5.3"
 pycairo = ">=1.17.0"
-pygobject = ">=3.14.0"
-toga-core = "0.3.1"
+pygobject = ">=3.46.0"
+toga-core = "0.4.0"
 
 [[package]]
 name = "toga-winforms"
-version = "0.3.1"
+version = "0.4.0"
 description = "A Windows backend for the Toga widget toolkit using the WinForms API."
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "toga-winforms-0.3.1.tar.gz", hash = "sha256:b80ecc364a1d8fd8d07574fbea39c955ede20d4f1bc8342f5874098c28d4a060"},
-    {file = "toga_winforms-0.3.1-py3-none-any.whl", hash = "sha256:c92d480ad21e6d625dcce38482e2f583476031905a2017daf83d612850dfb3f8"},
+    {file = "toga-winforms-0.4.0.tar.gz", hash = "sha256:6befc085f306871d78b5c545e9e83c76ccf3fa1cc9575a1cdaf311e6077ef74a"},
+    {file = "toga_winforms-0.4.0-py3-none-any.whl", hash = "sha256:313e5d8fca443c8744d09192355dbc9aca7cdb477f2139cea1fb8226c61022f8"},
 ]
 
 [package.dependencies]
 pythonnet = ">=3.0.0"
-toga-core = "0.3.1"
+toga-core = "0.4.0"
 
 [[package]]
 name = "tomli"
@@ -1896,17 +1962,17 @@ files = [
 
 [[package]]
 name = "travertino"
-version = "0.2.0"
+version = "0.3.0"
 description = "Travertino is a set of constants and utilities for describing user interfaces"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "travertino-0.2.0-py3-none-any.whl", hash = "sha256:000b8749c95450ebcc6848f365a814f79d55cb7fd35b09b1719309a007882a88"},
-    {file = "travertino-0.2.0.tar.gz", hash = "sha256:7c7528fa9ff7a95cb09ab9d21d80a7b5177115d6b2af4897ad907ee094b1c00f"},
+    {file = "travertino-0.3.0-py3-none-any.whl", hash = "sha256:f45d8102353f92c2894915e42f939ba4bc1a0be78b02fa54b640c0e674892167"},
+    {file = "travertino-0.3.0.tar.gz", hash = "sha256:51aa2ddf361ec42c0a70401b52ab0d26293fddb0d9de35555f7489ab8a296e19"},
 ]
 
 [package.extras]
-dev = ["pre-commit (==2.21.0)", "pre-commit (==3.2.0)", "pytest (==7.2.2)", "pytest-tldr (==0.2.5)", "setuptools-scm[toml] (==7.1.0)", "tox (==4.4.7)"]
+dev = ["pre-commit (==3.3.3)", "pytest (==7.4.0)", "setuptools-scm[toml] (==7.1.0)", "tox (==4.8.0)"]
 
 [[package]]
 name = "trio"
@@ -2177,4 +2243,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "4fe0ded01d97e3461106a46cecb88e5d6181276a34927cece6d80ecfd5ff344d"
+content-hash = "81129002906c1f4d2f631bb793f4611aeeddc86309a2d2c12633c90c1c6210cc"
