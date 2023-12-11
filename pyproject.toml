@@ -156,7 +156,7 @@ style_framework = "Shoelace v2.3"
 
 [tool.poetry]
 name = "omitme"
-version = "0.0.6"
+version = "0.0.8"
 description = "OmitMe - Your Privacy-Centric, Easily Extendable Data Deletion Solution"
 authors = ["WardPearce <wardpearce@pm.me>"]
 license = "GNU General Public License v3 (GPLv3)"
@@ -176,7 +176,7 @@ aiofiles = "^23.2.1"
 yarl = "^1.9.2"
 keyring = {extras = ["completion"], version = "^24.2.0"}
 cryptography = "^41.0.3"
-setuptools = "^68.2.2"
+setuptools = ">=68.2.2,<70.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
