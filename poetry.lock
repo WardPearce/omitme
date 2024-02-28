@@ -107,13 +107,13 @@ files = [
 
 [[package]]
 name = "briefcase"
-version = "0.3.16"
+version = "0.3.17"
 description = "Tools to support converting a Python project into a standalone native application."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "briefcase-0.3.16-py3-none-any.whl", hash = "sha256:dd20070069ef2ad499d2acd8510f0dcedd5419be7a3a2c8a3383ef9a26a4b0be"},
-    {file = "briefcase-0.3.16.tar.gz", hash = "sha256:b728ddc895528922cc056f85e93795b0472523445350a723faecb3321d7d99c2"},
+    {file = "briefcase-0.3.17-py3-none-any.whl", hash = "sha256:85d4a86468389581880894f541e9fecef720f36df19e0ed25cdabd805fcb57c1"},
+    {file = "briefcase-0.3.17.tar.gz", hash = "sha256:0c3a9204acfa513929e347082e60504b7f8a6b8a39e5090564830fb8984cc7b0"},
 ]
 
 [package.dependencies]
@@ -123,7 +123,7 @@ dmgbuild = {version = ">=1.6,<2.0", markers = "sys_platform == \"darwin\""}
 GitPython = ">=3.1,<4.0"
 packaging = ">=22.0"
 pip = ">=23.1.1"
-platformdirs = ">=2.6,<4.0"
+platformdirs = ">=2.6,<5.0"
 psutil = ">=5.9,<6.0"
 requests = ">=2.28,<3.0"
 rich = ">=12.6,<14.0"
@@ -133,8 +133,8 @@ tomli-w = ">=1.0,<2.0"
 wheel = ">=0.37"
 
 [package.extras]
-dev = ["coverage-conditional-plugin (==0.9.0)", "coverage[toml] (==7.3.2)", "pre-commit (==3.5.0)", "pytest (==7.4.2)", "pytest-xdist (==3.3.1)", "setuptools-scm[toml] (==8.0.4)", "tox (==4.11.3)"]
-docs = ["furo (==2023.9.10)", "pyenchant (==3.2.2)", "sphinx (==7.1.2)", "sphinx (==7.2.6)", "sphinx-autobuild (==2021.3.14)", "sphinx-copybutton (==0.5.2)", "sphinx-tabs (==3.4.1)", "sphinxcontrib-spelling (==8.0.0)"]
+dev = ["coverage-conditional-plugin (==0.9.0)", "coverage[toml] (==7.4.1)", "pre-commit (==3.5.0)", "pre-commit (==3.6.0)", "pytest (==8.0.0)", "pytest-xdist (==3.5.0)", "setuptools-scm (==8.0.4)", "tox (==4.12.1)"]
+docs = ["furo (==2024.1.29)", "pyenchant (==3.2.2)", "sphinx (==7.1.2)", "sphinx (==7.2.6)", "sphinx-autobuild (==2024.2.4)", "sphinx-copybutton (==0.5.2)", "sphinx-tabs (==3.4.5)", "sphinxcontrib-spelling (==8.0.0)"]
 
 [[package]]
 name = "brotli"
@@ -1702,19 +1702,20 @@ jeepney = ">=0.6"
 
 [[package]]
 name = "selenium"
-version = "4.16.0"
+version = "4.18.1"
 description = ""
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "selenium-4.16.0-py3-none-any.whl", hash = "sha256:aec71f4e6ed6cb3ec25c9c1b5ed56ae31b6da0a7f17474c7566d303f84e6219f"},
-    {file = "selenium-4.16.0.tar.gz", hash = "sha256:b2e987a445306151f7be0e6dfe2aa72a479c2ac6a91b9d5ef2d6dd4e49ad0435"},
+    {file = "selenium-4.18.1-py3-none-any.whl", hash = "sha256:b24a3cdd2d47c29832e81345bfcde0c12bb608738013e53c781b211b418df241"},
+    {file = "selenium-4.18.1.tar.gz", hash = "sha256:a11f67afa8bfac6b77e148c987b33f6b14eb1cae4d352722a75de1f26e3f0ae2"},
 ]
 
 [package.dependencies]
 certifi = ">=2021.10.8"
 trio = ">=0.17,<1.0"
 trio-websocket = ">=0.9,<1.0"
+typing_extensions = ">=4.9.0"
 urllib3 = {version = ">=1.26,<3", extras = ["socks"]}
 
 [[package]]
@@ -1834,132 +1835,132 @@ files = [
 
 [[package]]
 name = "toga"
-version = "0.4.1"
+version = "0.4.2"
 description = "A Python native, OS native GUI toolkit."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "toga-0.4.1-py3-none-any.whl", hash = "sha256:1d60ae00f578d61f695ee2867244111c183221772e9c68ada778884519ce87ad"},
-    {file = "toga-0.4.1.tar.gz", hash = "sha256:f8541cd5ca6d5e320515f1e9df94d7cc5431a8bfb3a301ae85cd40a10e545115"},
+    {file = "toga-0.4.2-py3-none-any.whl", hash = "sha256:1d0d746acd0fe0585ef6b28077ac548c69fcc744c9d6fd3544508079a269a087"},
+    {file = "toga-0.4.2.tar.gz", hash = "sha256:66e3ff7eeeab09e10587fb638be46981b75c55a0b1edaf96cb51b6ee2bfc9cad"},
 ]
 
 [package.dependencies]
-toga-android = {version = "0.4.1", markers = "sys_platform == \"android\""}
-toga-cocoa = {version = "0.4.1", markers = "sys_platform == \"darwin\""}
-toga-gtk = {version = "0.4.1", markers = "sys_platform == \"freebsd\" or sys_platform == \"linux\""}
-toga-iOS = {version = "0.4.1", markers = "sys_platform == \"ios\""}
-toga-web = {version = "0.4.1", markers = "sys_platform == \"emscripten\""}
-toga-winforms = {version = "0.4.1", markers = "sys_platform == \"win32\""}
+toga-android = {version = "0.4.2", markers = "sys_platform == \"android\""}
+toga-cocoa = {version = "0.4.2", markers = "sys_platform == \"darwin\""}
+toga-gtk = {version = "0.4.2", markers = "sys_platform == \"freebsd\" or sys_platform == \"linux\""}
+toga-iOS = {version = "0.4.2", markers = "sys_platform == \"ios\""}
+toga-web = {version = "0.4.2", markers = "sys_platform == \"emscripten\""}
+toga-winforms = {version = "0.4.2", markers = "sys_platform == \"win32\""}
 
 [[package]]
 name = "toga-android"
-version = "0.4.1"
+version = "0.4.2"
 description = "An Android backend for the Toga widget toolkit."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "toga-android-0.4.1.tar.gz", hash = "sha256:316fa599a3a646b104b7b567514a9e78a6cec3a8e9e81fb554f487b22b5e3459"},
-    {file = "toga_android-0.4.1-py3-none-any.whl", hash = "sha256:3ac7453a824551dfccb4676046c52ce833d5583688db90361650686cef55f3d0"},
+    {file = "toga-android-0.4.2.tar.gz", hash = "sha256:e37c347e8f7f25fe9853a347ee0b4b778e188a520c74f27f553b1f04d2293782"},
+    {file = "toga_android-0.4.2-py3-none-any.whl", hash = "sha256:2423d1e56625cd0ab439fb26fcc73ff464f18fc9a299e914df7ff50bb6da8d5e"},
 ]
 
 [package.dependencies]
-toga-core = "0.4.1"
+toga-core = "0.4.2"
 
 [[package]]
 name = "toga-cocoa"
-version = "0.4.1"
+version = "0.4.2"
 description = "A Cocoa (macOS) backend for the Toga widget toolkit."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "toga-cocoa-0.4.1.tar.gz", hash = "sha256:b4fb3fcb9072c8a6d115064294d42e9b2d0c24db38100076c50a5819f7f1c0e0"},
-    {file = "toga_cocoa-0.4.1-py3-none-any.whl", hash = "sha256:0e1fc33ee91d80a863efb637c6617b5ab34e48c052d33356c07246762a20721c"},
+    {file = "toga-cocoa-0.4.2.tar.gz", hash = "sha256:f38c9e17b7db432675f4f146d05627a08a422a8bcc436a13639b20b065e907c9"},
+    {file = "toga_cocoa-0.4.2-py3-none-any.whl", hash = "sha256:e20e087527726a0cc7708bbfa4de1c6272ecc4c803dfb78154b9e8b754c5fba7"},
 ]
 
 [package.dependencies]
 fonttools = ">=4.42.1,<5.0.0"
 rubicon-objc = ">=0.4.7,<0.5.0"
-toga-core = "0.4.1"
+toga-core = "0.4.2"
 
 [[package]]
 name = "toga-core"
-version = "0.4.1"
+version = "0.4.2"
 description = "A Python native, OS native GUI toolkit."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "toga-core-0.4.1.tar.gz", hash = "sha256:c1b2fbc919dcbc492a2e833cf1b387fb321611d19a7d9c76fc1553dac52f6383"},
-    {file = "toga_core-0.4.1-py3-none-any.whl", hash = "sha256:f732e3c2517d850e4d9f15c27af084edb7296cbaef2fd5fa67d826147bc925f6"},
+    {file = "toga-core-0.4.2.tar.gz", hash = "sha256:38ab72b9147b94e1595f5252f2c14ae3d2fc7da172bfda6fba8d6db04600474e"},
+    {file = "toga_core-0.4.2-py3-none-any.whl", hash = "sha256:16fa5f8ee88a5fdc44038aa565ecfedcb0e7a9e13ead2907a133b8e3cf9d3804"},
 ]
 
 [package.dependencies]
 travertino = ">=0.3.0"
 
 [package.extras]
-dev = ["Pillow (==10.1.0)", "coverage[toml] (==7.3.3)", "pre-commit (==3.5.0)", "pre-commit (==3.6.0)", "pytest (==7.4.3)", "pytest-asyncio (==0.23.2)", "pytest-freezer (==0.4.8)", "setuptools-scm (==8.0.4)", "tox (==4.11.4)", "typing-extensions (==4.9.0)"]
-docs = ["Pillow (==10.1.0)", "furo (==2023.9.10)", "pyenchant (==3.2.2)", "sphinx (==7.1.2)", "sphinx (==7.2.6)", "sphinx-autobuild (==2021.3.14)", "sphinx-autodoc-typehints (==1.25.2)", "sphinx-copybutton (==0.5.2)", "sphinx-csv-filter (==0.4.1)", "sphinx-tabs (==3.4.4)", "sphinx-toolbox (==3.5.0)", "sphinxcontrib-spelling (==8.0.0)"]
+dev = ["Pillow (==10.2.0)", "coverage[toml] (==7.4.1)", "pre-commit (==3.5.0)", "pre-commit (==3.6.0)", "pytest (==7.4.4)", "pytest-asyncio (==0.23.4)", "pytest-freezer (==0.4.8)", "setuptools-scm (==8.0.4)", "tox (==4.12.1)", "typing-extensions (==4.9.0)"]
+docs = ["Pillow (==10.2.0)", "furo (==2024.1.29)", "pyenchant (==3.2.2)", "sphinx (==7.1.2)", "sphinx (==7.2.6)", "sphinx-autobuild (==2024.2.4)", "sphinx-autodoc-typehints (==1.25.3)", "sphinx-copybutton (==0.5.2)", "sphinx-csv-filter (==0.4.1)", "sphinx-tabs (==3.4.5)", "sphinx-toolbox (==3.5.0)", "sphinxcontrib-spelling (==8.0.0)"]
 
 [[package]]
 name = "toga-gtk"
-version = "0.4.1"
+version = "0.4.2"
 description = "A GTK backend for the Toga widget toolkit."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "toga-gtk-0.4.1.tar.gz", hash = "sha256:9558471b1e68d58058cf0b6936dff895c400ee4504a8969a39dec36f81be9c86"},
-    {file = "toga_gtk-0.4.1-py3-none-any.whl", hash = "sha256:7afa4de6dab860b213ec9b3e0808288ad418eacb528aca247fddb045c4050b02"},
+    {file = "toga-gtk-0.4.2.tar.gz", hash = "sha256:f614226599d1ed1a18565cf7c3ae777a2595f7da0244949a2cd864e2f5622071"},
+    {file = "toga_gtk-0.4.2-py3-none-any.whl", hash = "sha256:fba322fe651acabb5f35b68ab7ab3a69a7a836b3f35124a5ab2c5fc1c25e3586"},
 ]
 
 [package.dependencies]
 gbulb = ">=0.5.3"
 pycairo = ">=1.17.0"
 pygobject = ">=3.46.0"
-toga-core = "0.4.1"
+toga-core = "0.4.2"
 
 [[package]]
 name = "toga-ios"
-version = "0.4.1"
+version = "0.4.2"
 description = "An iOS backend for the Toga widget toolkit."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "toga-iOS-0.4.1.tar.gz", hash = "sha256:279c568331b2ef3aee319b40e9acc7aea30ded72a78fa1aee3dc1572bca22c6e"},
-    {file = "toga_iOS-0.4.1-py3-none-any.whl", hash = "sha256:5f6ec1090eb6144e20638f9f5227f74cb45fcbd238a23d4b47b2614b745c2e2a"},
+    {file = "toga-iOS-0.4.2.tar.gz", hash = "sha256:f44d7f71629c14fc61c76ab2d99d0713bbc4830cd26fe44c667a3b484cf9379a"},
+    {file = "toga_iOS-0.4.2-py3-none-any.whl", hash = "sha256:4b1a7e76277bca26f08b566be80acb80f0fe37b12f597340880081160988d7e6"},
 ]
 
 [package.dependencies]
 fonttools = ">=4.42.1,<5.0.0"
 rubicon-objc = ">=0.4.7,<0.5.0"
-toga-core = "0.4.1"
+toga-core = "0.4.2"
 
 [[package]]
 name = "toga-web"
-version = "0.4.1"
+version = "0.4.2"
 description = "A Web backend for the Toga widget toolkit."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "toga-web-0.4.1.tar.gz", hash = "sha256:997bc7ddebee6664ce7705ec15d9f0b33cb9cbf5172a06c3fb61be76c4688539"},
-    {file = "toga_web-0.4.1-py3-none-any.whl", hash = "sha256:732244cf0b2c5046240de69e8bd3ea2b8acfada2c7eef7c45491cdecf930c012"},
+    {file = "toga-web-0.4.2.tar.gz", hash = "sha256:19271df21268f672aecd7888fb23bad8ada0c1ac99ed19b3d3386aacf9982860"},
+    {file = "toga_web-0.4.2-py3-none-any.whl", hash = "sha256:cf74e0ea5fa154221de819ceaed8fd7f901efdf490c692f056febee0c39d8a17"},
 ]
 
 [package.dependencies]
-toga-core = "0.4.1"
+toga-core = "0.4.2"
 
 [[package]]
 name = "toga-winforms"
-version = "0.4.1"
+version = "0.4.2"
 description = "A Windows backend for the Toga widget toolkit using the WinForms API."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "toga-winforms-0.4.1.tar.gz", hash = "sha256:66f551eeb39e0121ed73e8dd3983dc1e46b2c598f8ed57158b309c38ac604889"},
-    {file = "toga_winforms-0.4.1-py3-none-any.whl", hash = "sha256:8c70b53f46d3899b4a1d9d74755919435ff3046de4bf99f00916d4a953e8d922"},
+    {file = "toga-winforms-0.4.2.tar.gz", hash = "sha256:71840befbdcf889895a9bffa970521cc383a5be83788fce84eb6171bac9c294d"},
+    {file = "toga_winforms-0.4.2-py3-none-any.whl", hash = "sha256:ec004140db84dd74ec93e6b4b5c717ceca8735b9007aa64d81c0bc39b3fe0f71"},
 ]
 
 [package.dependencies]
 pythonnet = ">=3.0.0"
-toga-core = "0.4.1"
+toga-core = "0.4.2"
 
 [[package]]
 name = "tomli"
@@ -2046,13 +2047,13 @@ files = [
 
 [[package]]
 name = "typing-extensions"
-version = "4.7.1"
-description = "Backported and Experimental Type Hints for Python 3.7+"
+version = "4.10.0"
+description = "Backported and Experimental Type Hints for Python 3.8+"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "typing_extensions-4.7.1-py3-none-any.whl", hash = "sha256:440d5dd3af93b060174bf433bccd69b0babc3b15b1a8dca43789fd7f61514b36"},
-    {file = "typing_extensions-4.7.1.tar.gz", hash = "sha256:b75ddc264f0ba5615db7ba217daeb99701ad295353c45f9e95963337ceeeffb2"},
+    {file = "typing_extensions-4.10.0-py3-none-any.whl", hash = "sha256:69b1a937c3a517342112fb4c6df7e72fc39a38e7891a5730ed4985b5214b5475"},
+    {file = "typing_extensions-4.10.0.tar.gz", hash = "sha256:b0abd7c89e8fb96f98db18d86106ff1d90ab692004eb746cf6eda2682f91b3cb"},
 ]
 
 [[package]]
