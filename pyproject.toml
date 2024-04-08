@@ -174,7 +174,7 @@ httpx = ">=0.24.1,<0.28.0"
 click = "^8.1.7"
 aiofiles = "^23.2.1"
 yarl = "^1.9.2"
-keyring = {extras = ["completion"], version = "^24.2.0"}
+keyring = {extras = ["completion"], version = ">=24.2,<26.0"}
 cryptography = ">=41.0.3,<43.0.0"
 setuptools = ">=68.2.2,<70.0.0"
 
