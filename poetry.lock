@@ -1764,13 +1764,13 @@ jeepney = ">=0.6"
 
 [[package]]
 name = "selenium"
-version = "4.19.0"
+version = "4.21.0"
 description = ""
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "selenium-4.19.0-py3-none-any.whl", hash = "sha256:5b4f49240d61e687a73f7968ae2517d403882aae3550eae2a229c745e619f1d9"},
-    {file = "selenium-4.19.0.tar.gz", hash = "sha256:d9dfd6d0b021d71d0a48b865fe7746490ba82b81e9c87b212360006629eb1853"},
+    {file = "selenium-4.21.0-py3-none-any.whl", hash = "sha256:4770ffe5a5264e609de7dc914be6b89987512040d5a8efb2abb181330d097993"},
+    {file = "selenium-4.21.0.tar.gz", hash = "sha256:650dbfa5159895ff00ad16e5ddb6ceecb86b90c7ed2012b3f041f64e6e4904fe"},
 ]
 
 [package.dependencies]
