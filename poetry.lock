@@ -122,24 +122,25 @@ files = [
 
 [[package]]
 name = "briefcase"
-version = "0.3.17"
+version = "0.3.19"
 description = "Tools to support converting a Python project into a standalone native application."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "briefcase-0.3.17-py3-none-any.whl", hash = "sha256:85d4a86468389581880894f541e9fecef720f36df19e0ed25cdabd805fcb57c1"},
-    {file = "briefcase-0.3.17.tar.gz", hash = "sha256:0c3a9204acfa513929e347082e60504b7f8a6b8a39e5090564830fb8984cc7b0"},
+    {file = "briefcase-0.3.19-py3-none-any.whl", hash = "sha256:d5f47ddd23fe7ea79870e13ea9bf43bbb51d238a2fdd3ef75d1a59bffdeff3f1"},
+    {file = "briefcase-0.3.19.tar.gz", hash = "sha256:53d8344b73f357b155f892e3fcf19be97bcabb8b3997ebeaa483eb692d326748"},
 ]
 
 [package.dependencies]
 build = ">=0.10"
-cookiecutter = ">=2.3.1,<3.0"
+cookiecutter = ">=2.6.0,<3.0"
 dmgbuild = {version = ">=1.6,<2.0", markers = "sys_platform == \"darwin\""}
 GitPython = ">=3.1,<4.0"
 packaging = ">=22.0"
-pip = ">=23.1.1"
+pip = ">=23.1.2"
 platformdirs = ">=2.6,<5.0"
 psutil = ">=5.9,<6.0"
+python-dateutil = ">=2.9.0.post0"
 requests = ">=2.28,<3.0"
 rich = ">=12.6,<14.0"
 setuptools = ">=60"
@@ -148,8 +149,8 @@ tomli-w = ">=1.0,<2.0"
 wheel = ">=0.37"
 
 [package.extras]
-dev = ["coverage-conditional-plugin (==0.9.0)", "coverage[toml] (==7.4.1)", "pre-commit (==3.5.0)", "pre-commit (==3.6.0)", "pytest (==8.0.0)", "pytest-xdist (==3.5.0)", "setuptools-scm (==8.0.4)", "tox (==4.12.1)"]
-docs = ["furo (==2024.1.29)", "pyenchant (==3.2.2)", "sphinx (==7.1.2)", "sphinx (==7.2.6)", "sphinx-autobuild (==2024.2.4)", "sphinx-copybutton (==0.5.2)", "sphinx-tabs (==3.4.5)", "sphinxcontrib-spelling (==8.0.0)"]
+dev = ["coverage-conditional-plugin (==0.9.0)", "coverage[toml] (==7.5.3)", "pre-commit (==3.5.0)", "pre-commit (==3.7.1)", "pytest (==8.2.2)", "pytest-xdist (==3.6.1)", "setuptools-scm (==8.1.0)", "tox (==4.15.1)"]
+docs = ["furo (==2024.5.6)", "pyenchant (==3.2.2)", "sphinx (==7.1.2)", "sphinx (==7.3.7)", "sphinx-autobuild (==2021.3.14)", "sphinx-autobuild (==2024.4.16)", "sphinx-copybutton (==0.5.2)", "sphinx-tabs (==3.4.5)", "sphinxcontrib-spelling (==8.0.0)"]
 
 [[package]]
 name = "brotli"
@@ -503,13 +504,13 @@ files = [
 
 [[package]]
 name = "cookiecutter"
-version = "2.4.0"
+version = "2.6.0"
 description = "A command-line utility that creates projects from project templates, e.g. creating a Python package project from a Python package project template."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "cookiecutter-2.4.0-py3-none-any.whl", hash = "sha256:8344663028abc08ec09b912e663636a97e1775bffe973425ec0107431acd390e"},
-    {file = "cookiecutter-2.4.0.tar.gz", hash = "sha256:6d1494e66a784f23324df9d593f3e43af3db4f4b926b9e49e6ff060169fc042a"},
+    {file = "cookiecutter-2.6.0-py3-none-any.whl", hash = "sha256:a54a8e37995e4ed963b3e82831072d1ad4b005af736bb17b99c2cbd9d41b6e2d"},
+    {file = "cookiecutter-2.6.0.tar.gz", hash = "sha256:db21f8169ea4f4fdc2408d48ca44859349de2647fbe494a9d6c3edfc0542c21c"},
 ]
 
 [package.dependencies]
@@ -1589,13 +1590,13 @@ dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments
 
 [[package]]
 name = "python-dateutil"
-version = "2.8.2"
+version = "2.9.0.post0"
 description = "Extensions to the standard Python datetime module"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 files = [
-    {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
-    {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
+    {file = "python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"},
+    {file = "python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"},
 ]
 
 [package.dependencies]
