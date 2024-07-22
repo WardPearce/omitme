@@ -172,7 +172,7 @@ selenium-wire = "^5.1.0"
 pydantic = "^2.1.1"
 httpx = ">=0.24.1,<0.28.0"
 click = "^8.1.7"
-aiofiles = "^23.2.1"
+aiofiles = ">=23.2.1,<25.0.0"
 yarl = "^1.9.2"
 keyring = {extras = ["completion"], version = ">=24.2,<26.0"}
 cryptography = ">=41.0.3,<43.0.0"
