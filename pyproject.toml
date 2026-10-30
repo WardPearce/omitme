@@ -179,7 +179,7 @@ cryptography = ">=41.0.3,<43.0.0"
 setuptools = ">=70.2.0,<71.0.0"
 
 [tool.poetry.group.dev.dependencies]
-pytest = ">=7.4,<9.0"
+pytest = ">=7.4,<10.0"
 
 [tool.poetry.group.gui]
 optional = true
