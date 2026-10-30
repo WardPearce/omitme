@@ -8,7 +8,8 @@ authors = [
 license = {text = "GNU General Public License"}
 requires-python = ">=3.14"
 dependencies = [
-    "flet[all] (>=1.0.5,<2.0.0)"
+    "flet[all] (>=1.0.5,<2.0.0)",
+    "pydantic (>=2.14.2,<3.0.0)"
 ]
 
 
