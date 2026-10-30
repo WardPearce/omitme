@@ -25,19 +25,12 @@ class MessageList:
             spacing=6,
             padding=ft.Padding.symmetric(horizontal=16, vertical=12),
         )
-        self.action_bar = ft.Container(
-            padding=ft.Padding.symmetric(horizontal=16, vertical=10),
-            bgcolor=ft.Colors.SURFACE_CONTAINER_LOW,
-            content=ft.Row(),
-        )
 
         self.root = ft.Column(
             [
                 self.header,
                 ft.Divider(height=1),
                 self.list_view,
-                ft.Divider(height=1),
-                self.action_bar,
             ],
             expand=True,
             spacing=0,
@@ -107,7 +100,6 @@ class MessageList:
             )
 
         self.list_view.controls = self._list_controls()
-        self.action_bar.content = self._action_bar_content()
 
     def _list_controls(self) -> list[ft.Control]:
         state = self.app.state
@@ -254,59 +246,6 @@ class MessageList:
             border=ft.Border.all(1, ft.Colors.OUTLINE_VARIANT) if selected else None,
         )
 
-    def _action_bar_content(self) -> ft.Control:
-        state = self.app.state
-        selected = len(state.selected)
-        total = len(state.items)
-        can_delete = bool(selected) and not state.loading and not state.error
-
-        return ft.Row(
-            [
-                ft.Text(
-                    f"{selected} of {total} selected",
-                    size=12,
-                    color=ft.Colors.ON_SURFACE_VARIANT,
-                ),
-                ft.TextButton(
-                    "Select all",
-                    disabled=not total,
-                    on_click=self._select_all,
-                ),
-                ft.TextButton(
-                    "Clear",
-                    disabled=not selected,
-                    on_click=self._clear_selection,
-                ),
-                ft.Container(expand=True),
-                ft.Row(
-                    [
-                        ft.Text(
-                            "Dry run",
-                            size=12,
-                            color=ft.Colors.ON_SURFACE_VARIANT,
-                        ),
-                        ft.Switch(
-                            value=state.dry_run,
-                            on_change=self._on_dry_run_change,
-                        ),
-                    ],
-                    spacing=2,
-                    tight=True,
-                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                ),
-                ft.FilledButton(
-                    "Delete selected",
-                    icon=ft.Icons.DELETE_OUTLINE,
-                    disabled=not can_delete,
-                    tooltip="Simulates deletion. No data is removed in this build.",
-                    on_click=self._delete_clicked,
-                ),
-            ],
-            spacing=8,
-            vertical_alignment=ft.CrossAxisAlignment.CENTER,
-            wrap=True,
-        )
-
     @staticmethod
     def _placeholder(
         icon: ft.Control,
@@ -343,26 +282,15 @@ class MessageList:
     # ------------------------------------------------------------------
     def _toggle(self, item_id: str, selected: bool) -> None:
         self.app.state.toggle(item_id, selected)
-        self.refresh()
-        self.page.update()
+        self.app.selection_changed()
 
-    def _select_all(self) -> None:
+    def select_all(self) -> None:
         self.app.state.select_all()
-        self.refresh()
-        self.page.update()
+        self.app.selection_changed()
 
-    def _clear_selection(self) -> None:
+    def clear_selection(self) -> None:
         self.app.state.clear_selection()
-        self.refresh()
-        self.page.update()
-
-    def _on_dry_run_change(self, event) -> None:
-        # Real deletion is not implemented, so the switch always snaps back.
-        if not event.control.value:
-            event.control.value = True
-            self.app.state.dry_run = True
-            self.page.update()
-            show_real_deletion_unavailable(self.page)
+        self.app.selection_changed()
 
     async def _refresh_clicked(self) -> None:
         await self.app.reload()
@@ -370,7 +298,7 @@ class MessageList:
     async def _retry_clicked(self) -> None:
         await self.app.retry()
 
-    async def _delete_clicked(self) -> None:
+    async def delete_selected(self) -> None:
         state = self.app.state
         service = state.active
         if service is None or not state.selected_items or state.loading:
@@ -383,8 +311,7 @@ class MessageList:
         items = list(state.selected_items)
         for item in items:
             item.status = ItemStatus.QUEUED
-        self.refresh()
-        self.page.update()
+        self.app.selection_changed()
 
         try:
             results = [
@@ -398,8 +325,7 @@ class MessageList:
         except Exception as exc:  # noqa: BLE001 - surfaced to the user
             for item in items:
                 item.status = ItemStatus.FAILED
-            self.refresh()
-            self.page.update()
+            self.app.selection_changed()
             self.page.show_dialog(
                 ft.SnackBar(
                     content=ft.Text(f"Dry run failed: {exc}"),
@@ -408,8 +334,7 @@ class MessageList:
             )
             return
 
-        self.refresh()
-        self.page.update()
+        self.app.selection_changed()
 
         count = len(items)
         self.page.show_dialog(

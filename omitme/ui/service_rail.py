@@ -23,15 +23,7 @@ def build_service_rail(app) -> ft.NavigationRail:
         destinations=destinations,
         label_type=ft.NavigationRailLabelType.SELECTED,
         min_width=88,
-        group_alignment=-0.9,
+        group_alignment=-1.0,
         bgcolor=ft.Colors.SURFACE_CONTAINER_LOW,
         on_change=app.on_service_change,
-        leading=ft.Container(
-            content=ft.Icon(
-                ft.Icons.SHIELD_OUTLINED,
-                color=ft.Colors.PRIMARY,
-                size=26,
-            ),
-            padding=ft.Padding.only(top=14, bottom=10),
-        ),
     )

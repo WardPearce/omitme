@@ -8,6 +8,7 @@ from omitme.core.state import AppState
 from omitme.services import create_services
 from omitme.ui.filter_panel import FilterPanel
 from omitme.ui.message_list import MessageList
+from omitme.ui.scope_panel import ScopePanel
 from omitme.ui.service_rail import build_service_rail
 from omitme.ui.theme import BRAND, configure_page
 
@@ -22,7 +23,9 @@ class AppView:
 
         self.message_list = MessageList(self)
         self.rail = build_service_rail(self)
-        self.panel_slot = ft.Container(width=360)
+        self.scope_panel = ScopePanel(self)
+        self.panel = FilterPanel(self)
+        self.panel_slot = ft.Container(content=self.panel.build(), width=360)
         self.filter_button = ft.IconButton(
             icon=ft.Icons.FILTER_ALT_OUTLINED,
             tooltip="Open filters",
@@ -42,6 +45,7 @@ class AppView:
             [
                 self.rail,
                 ft.VerticalDivider(width=1, color=ft.Colors.OUTLINE_VARIANT),
+                self.scope_panel.build(),
                 self.message_list.root,
                 self.panel_slot,
             ],
@@ -51,7 +55,6 @@ class AppView:
         )
 
         self._update_responsive()
-        self.rebuild_panel(update=False)
 
     # ------------------------------------------------------------------
     # Construction / lifecycle
@@ -136,6 +139,7 @@ class AppView:
         self.page.update()
 
         await self.state.refresh()
+        self.scope_panel.refresh()
         self.message_list.refresh()
         self.page.update()
 
@@ -163,6 +167,7 @@ class AppView:
                 return
 
         await state.refresh()
+        self.scope_panel.refresh()
         self.message_list.refresh()
         self.page.update()
 
@@ -171,11 +176,18 @@ class AppView:
     # ------------------------------------------------------------------
     def refresh_ui(self) -> None:
         self.message_list.refresh()
+        self.scope_panel.refresh()
         self.rebuild_panel(update=False)
         self.page.update()
 
+    def selection_changed(self) -> None:
+        """Refresh the message list and the panel's selection controls."""
+        self.message_list.refresh()
+        self.panel.update_selection()
+        self.page.update()
+
     def rebuild_panel(self, *, update: bool = True) -> None:
-        self.panel_slot.content = FilterPanel(self).build()
+        self.panel.refresh()
         if update:
             self.page.update()
 

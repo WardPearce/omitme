@@ -7,11 +7,12 @@ from typing import Any
 
 import flet as ft
 
-from omitme.core.models import FilterField, FilterKind, ScopeSource
+from omitme.core.models import FilterField, FilterKind
+from omitme.ui.dialogs import show_real_deletion_unavailable
 
 
 class FilterPanel:
-    """Renders scope pickers and filters for the active service.
+    """Renders scope pickers, filters and selection actions for a service.
 
     Nothing in here knows about a specific platform.  Controls are chosen from
     ``FilterKind`` and populated from ``Service.options`` or static options.
@@ -27,7 +28,33 @@ class FilterPanel:
             size=13,
             weight=ft.FontWeight.BOLD,
         )
+        self.selection_text = ft.Text(
+            self._selection_summary(),
+            size=12,
+            color=ft.Colors.ON_SURFACE_VARIANT,
+        )
+        self.select_all_button = ft.TextButton(
+            "Select all",
+            on_click=self._on_select_all,
+        )
+        self.clear_button = ft.TextButton(
+            "Clear",
+            on_click=self._on_clear_selection,
+        )
+        self.dry_run_switch = ft.Switch(
+            value=self.state.dry_run,
+            on_change=self._on_dry_run_change,
+        )
+        self.delete_button = ft.FilledButton(
+            "Delete selected",
+            icon=ft.Icons.DELETE_OUTLINE,
+            tooltip="Simulates deletion. No data is removed in this build.",
+            on_click=self._on_delete,
+        )
+        if width is not None:
+            self.delete_button.width = width - 32
         self._root: ft.Container | None = None
+        self.update_selection()
 
     # ------------------------------------------------------------------
     # Layout
@@ -49,10 +76,10 @@ class FilterPanel:
     def refresh(self) -> None:
         """Rebuild the panel in place after the underlying state changed."""
         self.matched_text.value = str(len(self.state.items))
+        self.update_selection()
         if self._root is None:
             return
         self._root.content = self._column(self._build_children())
-        self._root.update()
 
     @staticmethod
     def _column(children: list[ft.Control]) -> ft.Column:
@@ -133,13 +160,6 @@ class FilterPanel:
 
         children.append(ft.Divider(height=1))
 
-        if service.scopes:
-            children.append(self._section_title("Scope"))
-            for index, source in enumerate(service.scopes):
-                children.append(
-                    self._scope_section(source, expanded=index == 0)
-                )
-
         if service.filters:
             children.append(self._section_title("Filters"))
             for field in service.filters:
@@ -172,6 +192,33 @@ class FilterPanel:
                     disabled=not service.connected,
                     on_click=self._on_apply,
                 ),
+                ft.Divider(height=1),
+                self._section_title("Selection"),
+                ft.Row(
+                    [
+                        self.selection_text,
+                        ft.Container(expand=True),
+                    ],
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                ),
+                ft.Row(
+                    [self.select_all_button, self.clear_button],
+                    spacing=0,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                ),
+                ft.Row(
+                    [
+                        ft.Text(
+                            "Dry run",
+                            size=12,
+                            color=ft.Colors.ON_SURFACE_VARIANT,
+                        ),
+                        self.dry_run_switch,
+                    ],
+                    spacing=6,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                ),
+                self.delete_button,
             ]
         )
         return children
@@ -184,115 +231,6 @@ class FilterPanel:
             weight=ft.FontWeight.BOLD,
             color=ft.Colors.ON_SURFACE_VARIANT,
         )
-
-    # ------------------------------------------------------------------
-    # Scope pickers
-    # ------------------------------------------------------------------
-    def _scope_section(
-        self,
-        source: ScopeSource,
-        *,
-        expanded: bool = False,
-    ) -> ft.Control:
-        selected = self.state.scopes.setdefault(source.key, [])
-        options = source.options or self.state.options.get(source.key, [])
-
-        count_text = ft.Text(
-            self._selection_label(source, selected),
-            size=10,
-            color=ft.Colors.ON_SURFACE_VARIANT,
-        )
-        list_column = ft.Column(spacing=0, tight=True)
-        search = ft.TextField(
-            hint_text=f"Search {source.label.lower()}…",
-            prefix_icon=ft.Icons.SEARCH,
-            dense=True,
-            visible=source.searchable,
-            on_change=lambda event: _render_search(event.control.value or ""),
-        )
-
-        def render(text: str = "") -> list[ft.Control]:
-            query = text.strip().lower()
-            filtered = [
-                option
-                for option in options
-                if not query
-                or query in option.label.lower()
-                or query in (option.description or "").lower()
-            ]
-            if not filtered:
-                return [
-                    ft.Text(
-                        "No options available.",
-                        size=11,
-                        color=ft.Colors.ON_SURFACE_VARIANT,
-                        italic=True,
-                    )
-                ]
-
-            controls: list[ft.Control] = []
-            for option in filtered:
-                controls.append(
-                    ft.Checkbox(
-                        label=option.label,
-                        value=option.value in selected,
-                        on_change=lambda event, value=option.value: _toggle_option(
-                            value, bool(event.control.value)
-                        ),
-                    )
-                )
-            return controls
-
-        def _render_search(text: str) -> None:
-            list_column.controls = render(text)
-            list_column.update()
-
-        def _toggle_option(value: str, checked: bool) -> None:
-            if checked:
-                if not source.multi:
-                    selected[:] = [value]
-                elif value not in selected:
-                    selected.append(value)
-            elif value in selected:
-                selected.remove(value)
-
-            count_text.value = self._selection_label(source, selected)
-            count_text.update()
-
-            if not source.multi:
-                list_column.controls = render(search.value or "")
-                list_column.update()
-
-        list_column.controls = render()
-
-        return ft.ExpansionTile(
-            title=ft.Text(source.label, size=13),
-            subtitle=count_text,
-            controls=[
-                ft.Container(
-                    content=ft.Column(
-                        [search, list_column],
-                        spacing=2,
-                        tight=True,
-                    ),
-                    padding=ft.Padding.only(bottom=8),
-                )
-            ],
-            expanded=expanded,
-            dense=True,
-            tile_padding=ft.Padding.symmetric(horizontal=6),
-            controls_padding=ft.Padding.only(left=6, right=6),
-        )
-
-    @staticmethod
-    def _selection_label(source: ScopeSource, selected: list[str]) -> str:
-        if not selected:
-            return f"All {source.label.lower()}"
-        noun = source.label.lower()
-        if len(selected) == 1:
-            noun = noun[:-1] if noun.endswith("s") else noun
-            return f"1 {noun} selected"
-        return f"{len(selected)} {noun} selected"
 
     # ------------------------------------------------------------------
     # Filter controls
@@ -508,6 +446,49 @@ class FilterPanel:
 
     def _set_filter(self, key: str, value: Any) -> None:
         self.state.filters[key] = value
+
+    # ------------------------------------------------------------------
+    # Selection actions
+    # ------------------------------------------------------------------
+    def _selection_summary(self) -> str:
+        return f"{len(self.state.selected)} of {len(self.state.items)} selected"
+
+    def update_selection(self) -> None:
+        """Refresh the selection controls from the current app state."""
+        service = self.state.active
+        selected = len(self.state.selected)
+        total = len(self.state.items)
+
+        self.selection_text.value = f"{selected} of {total} selected"
+        self.select_all_button.disabled = not total
+        self.clear_button.disabled = not selected
+        self.dry_run_switch.value = self.state.dry_run
+        self.delete_button.disabled = not (
+            selected
+            and not self.state.loading
+            and not self.state.error
+            and service is not None
+            and service.connected
+        )
+
+    def _on_select_all(self) -> None:
+        self.app.message_list.select_all()
+
+    def _on_clear_selection(self) -> None:
+        self.app.message_list.clear_selection()
+
+    def _on_dry_run_change(self, event) -> None:
+        # Real deletion is not implemented, so the switch always snaps back.
+        if not event.control.value:
+            event.control.value = True
+            self.state.dry_run = True
+            self.page.update()
+            show_real_deletion_unavailable(self.page)
+
+    async def _on_delete(self) -> None:
+        await self.app.message_list.delete_selected()
+        self.update_selection()
+        self.page.update()
 
     # ------------------------------------------------------------------
     # Actions
