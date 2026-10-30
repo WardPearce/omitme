@@ -1,0 +1,17 @@
+[project]
+name = "omitme"
+version = "2.0.0"
+description = "OmitMe - Your Privacy-Centric, Easily Extendable Data Deletion Solution."
+authors = [
+    {name = "WardPearce",email = "wardpearce@pm.me"}
+]
+license = {text = "GNU General Public License"}
+requires-python = ">=3.14"
+dependencies = [
+    "flet[all] (>=1.0.5,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
